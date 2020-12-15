@@ -1,0 +1,22 @@
+uuid: 13e0165c-106d-4c0f-ae8a-f7e8983de6cb
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - idcui
+_core:
+  default_config_hash: hOgpsX-rP7PNKIrvNALf-OwR8JFbDFGhSrY6G0Ebg8s
+id: idcui_messages
+theme: idcui
+region: highlighted
+weight: -11
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: 'Status messages'
+  provider: system
+  label_display: '0'
+visibility: {  }

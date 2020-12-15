@@ -1,0 +1,27 @@
+uuid: 78dcec5b-3abe-486c-975e-5f7532b9da58
+langcode: en
+status: false
+dependencies:
+  config:
+    - system.menu.tools
+  module:
+    - system
+  theme:
+    - idcui
+_core:
+  default_config_hash: MQCbptHnFfYdy1IVfwJ8HdZOb1_Dk3gxbdi7VAM3U0E
+id: idcui_tools
+theme: idcui
+region: top_menu
+weight: -7
+provider: null
+plugin: 'system_menu_block:tools'
+settings:
+  id: 'system_menu_block:tools'
+  label: Tools
+  provider: system
+  label_display: visible
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility: {  }

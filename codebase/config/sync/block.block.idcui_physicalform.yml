@@ -1,0 +1,31 @@
+uuid: 62ec1d60-88ea-4dfd-b32b-81c207d32830
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.physical_form
+  module:
+    - facets
+    - system
+  theme:
+    - idcui
+_core:
+  default_config_hash: l72xnM2aFst41m2y6J1M1rsf25u1F7ohF4-w6FQms4A
+id: idcui_physicalform
+theme: idcui
+region: top_menu
+weight: 0
+provider: null
+plugin: 'facet_block:physical_form'
+settings:
+  id: 'facet_block:physical_form'
+  label: 'Physical Form'
+  provider: facets
+  label_display: visible
+  block_id: physicalform
+visibility:
+  request_path:
+    id: request_path
+    pages: /solr-search/content
+    negate: false
+    context_mapping: {  }
