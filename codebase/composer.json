@@ -33,7 +33,7 @@
         },
         {
             "type": "vcs",
-            "url": "git@github.com:jabrah/idc-ui-theme.git"
+            "url": "git@github.com:jhu-idc/idc_ui_theme.git"
         },
         {
             "type": "vcs",
@@ -63,7 +63,7 @@
         "islandora-rdm/islandora_fits": "dev-master",
         "islandora/carapace": "dev-8.x-3.x",
         "jhu-idc/islandora_defaults": "dev-8.x-1.x",
-        "jabrah/idc-ui-theme": "dev-main",
+        "jhu-idc/idc-ui-theme": "dev-main",
         "jhu-idc/idc_ui_module": "dev-main",
         "vlucas/phpdotenv": "^4.0",
         "webflo/drupal-finder": "^1.0.0",
