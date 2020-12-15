@@ -33,7 +33,7 @@
         },
         {
             "type": "vcs",
-            "url": "git@github.com:jhu-idc/idc_ui_theme.git"
+            "url": "git@github.com:jhu-idc/idc-ui-theme.git"
         },
         {
             "type": "vcs",
@@ -45,6 +45,7 @@
         "composer/installers": "^1.2",
         "cweagans/composer-patches": "^1.6.5",
         "drupal/admin_toolbar": "^2.0",
+        "drupal/captcha": "^1.1",
         "drupal/console": "~1.0",
         "drupal/content_browser": "^1.0@alpha",
         "drupal/core": "^8.8.1",
