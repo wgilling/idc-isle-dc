@@ -6310,25 +6310,25 @@
         },
         {
             "name": "jhu-idc/idc-ui-theme",
-            "version": "dev-main",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jhu-idc/idc-ui-theme.git",
-                "reference": "680bc7979971a3e0cffb0178d6b9b7d820ffdd3c"
+                "reference": "95ed21f335e5eaa27cfd654335b86aaca656f194"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jhu-idc/idc-ui-theme/zipball/680bc7979971a3e0cffb0178d6b9b7d820ffdd3c",
-                "reference": "680bc7979971a3e0cffb0178d6b9b7d820ffdd3c",
+                "url": "https://api.github.com/repos/jhu-idc/idc-ui-theme/zipball/95ed21f335e5eaa27cfd654335b86aaca656f194",
+                "reference": "95ed21f335e5eaa27cfd654335b86aaca656f194",
                 "shasum": ""
             },
             "type": "drupal-theme",
             "description": "Moo",
             "support": {
-                "source": "https://github.com/jhu-idc/idc-ui-theme/tree/main",
+                "source": "https://github.com/jhu-idc/idc-ui-theme/tree/develop",
                 "issues": "https://github.com/jhu-idc/idc-ui-theme/issues"
             },
-            "time": "2020-11-19T20:10:25+00:00"
+            "time": "2020-12-10T21:54:54+00:00"
         },
         {
             "name": "jhu-idc/idc_ui_module",
@@ -13813,28 +13813,6 @@
                 "webtest"
             ],
             "time": "2019-09-25T09:05:11+00:00"
-        },
-        {
-            "name": "jabrah/idc-ui-theme",
-            "version": "dev-main",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jhu-idc/idc-ui-theme.git",
-                "reference": "680bc7979971a3e0cffb0178d6b9b7d820ffdd3c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jhu-idc/idc-ui-theme/zipball/680bc7979971a3e0cffb0178d6b9b7d820ffdd3c",
-                "reference": "680bc7979971a3e0cffb0178d6b9b7d820ffdd3c",
-                "shasum": ""
-            },
-            "type": "drupal-theme",
-            "description": "Moo",
-            "support": {
-                "source": "https://github.com/jhu-idc/idc-ui-theme/tree/main",
-                "issues": "https://github.com/jhu-idc/idc-ui-theme/issues"
-            },
-            "time": "2020-11-19T20:10:25+00:00"
         },
         {
             "name": "jcalderonzumba/gastonjs",
