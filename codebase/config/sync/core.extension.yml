@@ -46,6 +46,7 @@ module:
   history: 0
   idc_ui_module: 0
   image: 0
+  image_captcha: 0
   islandora: 0
   islandora_audio: 0
   islandora_breadcrumbs: 0
