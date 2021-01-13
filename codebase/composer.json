@@ -64,7 +64,7 @@
         "islandora-rdm/islandora_fits": "dev-master",
         "islandora/carapace": "dev-8.x-3.x",
         "jhu-idc/islandora_defaults": "dev-8.x-1.x",
-        "jhu-idc/idc-ui-theme": "dev-main",
+        "jhu-idc/idc-ui-theme": "dev-develop",
         "jhu-idc/idc_ui_module": "dev-main",
         "vlucas/phpdotenv": "^4.0",
         "webflo/drupal-finder": "^1.0.0",

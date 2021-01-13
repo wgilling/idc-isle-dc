@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ede6465a454b50d8a1bcf063bda85c97",
+    "content-hash": "72727815c66089959a48cacfed206efa",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -6241,6 +6241,50 @@
             "time": "2021-01-08T21:57:04+00:00"
         },
         {
+            "name": "jhu-idc/idc-ui-theme",
+            "version": "dev-develop",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jhu-idc/idc-ui-theme.git",
+                "reference": "96be8d73d53e0a9145decb9277b337defe58a83f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jhu-idc/idc-ui-theme/zipball/96be8d73d53e0a9145decb9277b337defe58a83f",
+                "reference": "96be8d73d53e0a9145decb9277b337defe58a83f",
+                "shasum": ""
+            },
+            "type": "drupal-theme",
+            "description": "Moo",
+            "support": {
+                "source": "https://github.com/jhu-idc/idc-ui-theme/tree/develop",
+                "issues": "https://github.com/jhu-idc/idc-ui-theme/issues"
+            },
+            "time": "2021-01-13T15:25:11+00:00"
+        },
+        {
+            "name": "jhu-idc/idc_ui_module",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jhu-idc/idc_ui_module.git",
+                "reference": "32fbaf5fc55b2288d0169daa14e10bf6ab74d807"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jhu-idc/idc_ui_module/zipball/32fbaf5fc55b2288d0169daa14e10bf6ab74d807",
+                "reference": "32fbaf5fc55b2288d0169daa14e10bf6ab74d807",
+                "shasum": ""
+            },
+            "type": "drupal-module",
+            "description": "Moo Module",
+            "support": {
+                "source": "https://github.com/jhu-idc/idc_ui_module/tree/main",
+                "issues": "https://github.com/jhu-idc/idc_ui_module/issues"
+            },
+            "time": "2020-11-19T20:09:25+00:00"
+        },
+        {
             "name": "jhu-idc/islandora_defaults",
             "version": "dev-8.x-1.x",
             "source": {
@@ -6307,50 +6351,6 @@
                 "source": "http://github.com/jhu-idc/reference_value_pair"
             },
             "time": "2021-01-08T22:06:46+00:00"
-        },
-        {
-            "name": "jhu-idc/idc-ui-theme",
-            "version": "dev-develop",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jhu-idc/idc-ui-theme.git",
-                "reference": "95ed21f335e5eaa27cfd654335b86aaca656f194"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jhu-idc/idc-ui-theme/zipball/95ed21f335e5eaa27cfd654335b86aaca656f194",
-                "reference": "95ed21f335e5eaa27cfd654335b86aaca656f194",
-                "shasum": ""
-            },
-            "type": "drupal-theme",
-            "description": "Moo",
-            "support": {
-                "source": "https://github.com/jhu-idc/idc-ui-theme/tree/develop",
-                "issues": "https://github.com/jhu-idc/idc-ui-theme/issues"
-            },
-            "time": "2020-12-10T21:54:54+00:00"
-        },
-        {
-            "name": "jhu-idc/idc_ui_module",
-            "version": "dev-main",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jhu-idc/idc_ui_module.git",
-                "reference": "32fbaf5fc55b2288d0169daa14e10bf6ab74d807"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jhu-idc/idc_ui_module/zipball/32fbaf5fc55b2288d0169daa14e10bf6ab74d807",
-                "reference": "32fbaf5fc55b2288d0169daa14e10bf6ab74d807",
-                "shasum": ""
-            },
-            "type": "drupal-module",
-            "description": "Moo Module",
-            "support": {
-                "source": "https://github.com/jhu-idc/idc_ui_module/tree/main",
-                "issues": "https://github.com/jhu-idc/idc_ui_module/issues"
-            },
-            "time": "2020-11-19T20:09:25+00:00"
         },
         {
             "name": "laminas/laminas-diactoros",
@@ -15681,7 +15681,7 @@
         "islandora-rdm/islandora_fits": 20,
         "islandora/carapace": 20,
         "jhu-idc/islandora_defaults": 20,
-        "jabrah/idc-ui-theme": 20,
+        "jhu-idc/idc-ui-theme": 20,
         "jhu-idc/idc_ui_module": 20
     },
     "prefer-stable": true,
