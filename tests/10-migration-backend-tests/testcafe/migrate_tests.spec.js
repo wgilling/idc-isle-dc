@@ -272,17 +272,41 @@ test('Perform Repository Object Migration', async t => {
     ])
     .click('#edit-import');
 
+  // corporate bodies
+
+  await t
+    .click(selectMigration)
+    .click(migrationOptions.withAttribute('value', migrate_corporatebody_taxonomy));
+
+  await t
+    .setFilesToUpload('#edit-source-file', [
+      './migrations/islandora_object-corporatebodies.csv'
+    ])
+    .click('#edit-import');
+
+  // collections
+
+  await t
+    .click(selectMigration)
+    .click(migrationOptions.withAttribute('value', migrate_new_collection));
+
+  await t
+    .setFilesToUpload('#edit-source-file', [
+      './migrations/islandora_object-collections.csv'
+    ])
+    .click('#edit-import');
+
   await t
     .click(selectMigration)
     .click(migrationOptions.withAttribute('value', migrate_new_items));
+
+  // Migrate Islandora Repository Objects
 
   await t
     .setFilesToUpload('#edit-source-file', [
       './migrations/item.csv'
     ])
     .click('#edit-import');
-
-
 
 });
 
