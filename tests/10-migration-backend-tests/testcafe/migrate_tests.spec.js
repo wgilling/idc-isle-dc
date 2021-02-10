@@ -226,6 +226,51 @@ test('Perform Genre Taxonomy Migration', async t => {
 });
 
 test('Perform Repository Object Migration', async t => {
+  // Migrate dependencies first
+
+  // persons
+  await t
+    .click(selectMigration)
+    .click(migrationOptions.withAttribute('value', migrate_person_taxonomy));
+
+  await t
+    .setFilesToUpload('#edit-source-file', [
+      './migrations/islandora_object-persons.csv'
+    ])
+    .click('#edit-import');
+
+  // subjects
+  await t
+    .click(selectMigration)
+    .click(migrationOptions.withAttribute('value', migrate_subject_taxonomy));
+
+  await t
+    .setFilesToUpload('#edit-source-file', [
+      './migrations/islandora_object-subjects.csv'
+    ])
+    .click('#edit-import');
+
+  // locations
+  await t
+    .click(selectMigration)
+    .click(migrationOptions.withAttribute('value', migrate_geolocation_taxonomy));
+
+  await t
+    .setFilesToUpload('#edit-source-file', [
+      './migrations/islandora_object-geolocations.csv'
+    ])
+    .click('#edit-import');
+
+  // genres
+  await t
+    .click(selectMigration)
+    .click(migrationOptions.withAttribute('value', migrate_genre_taxonomy));
+
+  await t
+    .setFilesToUpload('#edit-source-file', [
+      './migrations/islandora_object-genres.csv'
+    ])
+    .click('#edit-import');
 
   await t
     .click(selectMigration)
@@ -236,6 +281,8 @@ test('Perform Repository Object Migration', async t => {
       './migrations/item.csv'
     ])
     .click('#edit-import');
+
+
 
 });
 
