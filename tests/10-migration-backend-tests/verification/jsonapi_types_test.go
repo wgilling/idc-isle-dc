@@ -93,6 +93,19 @@ type JsonApiData struct {
 	Id   string
 }
 
+func (jad *JsonApiData) resolve(t *testing.T, v interface{}) {
+	u := JsonApiUrl{
+		t:            t,
+		baseUrl:      DrupalBaseurl,
+		drupalEntity: jad.Type.entity(),
+		drupalBundle: jad.Type.bundle(),
+		filter:       "id",
+		value:        jad.Id,
+	}
+
+	u.get(v)
+}
+
 // Represents the results of a JSONAPI query for a single Person from the Person Taxonomy
 type JsonApiPerson struct {
 	JsonApiData []struct {
@@ -252,32 +265,119 @@ type JsonApiCollection struct {
 	} `json:"data"`
 }
 
-// Represents the results of a JSONAPI query for a single repository object
-type JsonApiRepoObj struct {
+// Represents the results of a JSONAPI query for a single islandora object
+type JsonApiIslandoraObj struct {
 	JsonApiData []struct {
 		Type              DrupalType
 		Id                string
 		JsonApiAttributes struct {
-			Title       string
-			Description string
-			Extent      []string `json:"field_extent"`
+			Title             string
+			CollectionNumber  []string
+			DateAvailable     string   `json:"field_date_available"`
+			DateCopyrighted   []string `json:"field_date_copyrighted"`
+			DateCreated       []string `json:"field_date_created"`
+			DatePublished     []string `json:"field_date_published"`
+			DigitalIdentifier []string `json:"field_digital_identifier"`
+			DspaceIdentifier  struct {
+				Uri   string
+				Title string
+			} `json:"field_dspace_identifier"`
+			DspaceItemid string `json:"field_dspace_item_id"`
+			Description  string
+			Extent       []string `json:"field_extent"`
+			FindingAid   []struct {
+				Uri   string
+				Title string
+			}
+			GeoportalLink struct {
+				Uri   string
+				Title string
+			}
+			// TODO
+			IsPartOf    string
+			Issn        string
+			ItemBarcode string
+			JhirUri     struct {
+				Uri   string
+				Title string
+			}
+			LibraryCatalogLink struct {
+				Uri   string
+				Title string
+			}
 		} `json:"attributes"`
 		JsonApiRelationships struct {
+			Abstract struct {
+				Data []JsonApiLanguageValue
+			} `json:"field_abstract"`
+			AccessRights struct {
+				Data []JsonApiData
+			} `json:"field_access_rights"`
+			// TODO
+			AccessTerms struct {
+				Data []JsonApiData
+			} `json:"field_access_terms"`
+			AltTitle struct {
+				Data []JsonApiLanguageValue
+			} `json:"field_alternative_title"`
+			Contributor []struct {
+				Data []struct {
+					JsonApiData
+					Meta map[string]interface{}
+				}
+			} `json:"field_contributor"`
+			Copyright struct {
+				Data JsonApiData
+			} `json:"field_copyright_and_use"`
+			CopyrightHolder struct {
+				Data []JsonApiData
+			} `json:"field_copyright_holder"`
+			Creator struct {
+				Data []struct {
+					JsonApiData
+					Meta map[string]interface{}
+				}
+			} `json:"field_creator"`
+			Description struct {
+				Data []JsonApiLanguageValue
+			} `json:"field_description"`
+			DigitalPublisher struct {
+				Data []JsonApiData
+			}
+			DisplayHints JsonApiData
+			Genre        struct {
+				Data []JsonApiData
+			}
+			Language struct {
+				Data []JsonApiData
+			}
 			Model struct {
 				Data JsonApiData
 			} `json:"field_model"`
 			MemberOf struct {
 				Data []JsonApiData
 			} `json:"field_member_of"`
+			Publisher struct {
+				Data []JsonApiData
+			} `json:"field_publisher"`
+			PublisherCountry struct {
+				Data []JsonApiData
+			} `json:"field_publisher_country"`
 			ResourceType struct {
-				Data JsonApiData
+				Data []JsonApiData
 			} `json:"field_resource_type"`
-			LinkedAgent struct {
-				Data []struct {
-					JsonApiData
-					Meta map[string]interface{}
-				}
-			} `json:"field_linked_agent"`
+			SpatialCoverage struct {
+				Data []JsonApiData
+			} `json:"field_spatial_coverage"`
+			Subject struct {
+				Data []JsonApiData
+			} `json:"field_subject"`
+			TableOfContents struct {
+				Data []JsonApiLanguageValue
+			} `json:"field_table_of_contents"`
+			TitleLanguage struct {
+				Data JsonApiData
+			} `json:"field_title_language"`
 			DisplayHint struct {
 				Data JsonApiData
 			} `json:"field_display_hints"`
@@ -426,9 +526,7 @@ type JsonApiLanguage struct {
 //    }
 //  }
 type JsonApiLanguageValue struct {
-	t    assert.TestingT
-	Type DrupalType
-	Id   string
+	JsonApiData
 	Meta struct {
 		Value string
 	}
@@ -437,17 +535,8 @@ type JsonApiLanguageValue struct {
 // Answers the language code of the value string by resolving the Language Taxonomy entity identified in the
 // JsonApiLanguageValue
 func (lv JsonApiLanguageValue) langCode(t *testing.T) string {
-	u := JsonApiUrl{
-		t:            t,
-		baseUrl:      DrupalBaseurl,
-		drupalEntity: lv.Type.entity(),
-		drupalBundle: lv.Type.bundle(),
-		filter:       "id",
-		value:        lv.Id,
-	}
-
 	jsonApiLang := JsonApiLanguage{}
-	u.get(&jsonApiLang)
+	lv.resolve(t, jsonApiLang)
 	return jsonApiLang.JsonApiData[0].JsonApiAttributes.LanguageCode
 }
 

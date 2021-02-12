@@ -580,7 +580,27 @@ func Test_VerifyCollection(t *testing.T) {
 }
 
 func Test_VerifyRepositoryItem(t *testing.T) {
+	expectedJson := ExpectedRepoObj{}
+	unmarshalJson(t, "item-01.json", &expectedJson)
 
+	// sanity check the expected json
+	assert.Equal(t, "node", expectedJson.Type)
+	assert.Equal(t, "islandora_object", expectedJson.Bundle)
+
+	u := &JsonApiUrl{
+		t:            t,
+		baseUrl:      DrupalBaseurl,
+		drupalEntity: expectedJson.Type,
+		drupalBundle: expectedJson.Bundle,
+		filter:       "title",
+		value:        expectedJson.Title,
+	}
+
+	// retrieve json of the migrated entity from the jsonapi and unmarshal the single response
+	res := &JsonApiIslandoraObj{}
+	u.get(res)
+	sourceId := res.JsonApiData[0].Id
+	assert.NotEmpty(t, sourceId)
 }
 
 func Test_VerifyMediaAndFile(t *testing.T) {
