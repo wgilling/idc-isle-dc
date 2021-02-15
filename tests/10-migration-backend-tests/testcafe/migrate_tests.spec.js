@@ -304,7 +304,7 @@ test('Perform Repository Object Migration', async t => {
 
   await t
     .setFilesToUpload('#edit-source-file', [
-      './migrations/item.csv'
+      './migrations/islandora_object.csv'
     ])
     .click('#edit-import');
 

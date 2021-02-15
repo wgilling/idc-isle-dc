@@ -51,16 +51,19 @@ type ExpectedRepoObj struct {
 	Type         string
 	Bundle       string
 	Model        string
-	ResourceType string `json:"resource_type"`
+	ResourceType []string `json:"resource_type"`
 	Title        string
-	MemberOf     string `json:"member_of"`
+	MemberOf     []string `json:"member_of"`
 	Extent       []string
 	LinkedAgent  []struct {
 		Rel  string
 		Name string
 	}
 	DisplayHint string `json:"display_hint"`
-	Description string
+	Description []struct {
+		Value    string
+		LangCode string `json:"language"`
+	}
 }
 
 // Represents the expected results of a migrated Access Rights taxonomy term
