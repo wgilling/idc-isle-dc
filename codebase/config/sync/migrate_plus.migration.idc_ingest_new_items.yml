@@ -376,12 +376,16 @@ process:
     - plugin: extract
       index:
         - 1
-#  # FIXME field values in JSON are from the wrong taxonomy
-#  field_member_of:
-#    plugin: migration_lookup
-#    migration: idc_ingest_new_collection
-#    source: collectionid_local
-#    no_stub: true
+  field_member_of:
+    - plugin: skip_on_empty
+      method: process
+      source: member_of
+    - plugin: explode
+      delimiter: '|'
+      strict: false
+    - plugin: migration_lookup
+      migration: idc_ingest_new_collection
+      no_stub: true
   field_model:
     plugin: entity_lookup
     bundle_key: vid
