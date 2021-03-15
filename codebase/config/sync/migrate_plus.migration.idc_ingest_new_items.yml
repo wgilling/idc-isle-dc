@@ -340,7 +340,7 @@ process:
       index:
         - 1
   field_issn: issn
-#  # TODO field_is_part_of
+  field_is_part_of: is_part_of
   field_item_barcode: item_barcode
   # note: only available in JSON view
   field_jhir/uri: jhir_uri
@@ -436,6 +436,9 @@ process:
     - plugin: skip_on_empty
       method: process
       source: spatial_coverage
+    - plugin: explode
+      delimiter: '|'
+      strict: false
     - plugin: entity_lookup
       bundle_key: vid
       bundle: geo_location
@@ -495,6 +498,13 @@ process:
       bundle: language
       bundle_key: vid
       value_key: name
+  field_years:
+    - plugin: skip_on_empty
+      method: process
+      source: years
+    - plugin: explode
+      delimiter: '|'
+      strict: false
 destination:
   plugin: 'entity:node'
   default_bundle: islandora_object
