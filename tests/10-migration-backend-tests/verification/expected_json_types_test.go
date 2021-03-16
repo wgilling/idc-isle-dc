@@ -95,8 +95,11 @@ type ExpectedRepoObj struct {
 	Publisher        []string
 	PublisherCountry []string `json:"publisher_country"`
 	ResourceType     []string `json:"resource_type"`
+	SpatialCoverage  []string `json:"spatial_coverage"`
+	Subject          []string
 	Title            string
-	MemberOf         []string `json:"member_of"`
+	TableOfContents  []LanguageString `json:"toc"`
+	MemberOf         []string         `json:"member_of"`
 	LinkedAgent      []struct {
 		Rel  string
 		Name string

@@ -805,6 +805,31 @@ func Test_VerifyRepositoryItem(t *testing.T) {
 		assert.Equal(t, expectedJson.ResourceType[i], resource.JsonApiData[0].JsonApiAttributes.Name)
 	}
 
+	// Spatial Coverage
+	assert.Equal(t, 2, len(expectedJson.SpatialCoverage))
+	assert.Equal(t, len(expectedJson.SpatialCoverage), len(relData.SpatialCoverage.Data))
+	for i := range relData.SpatialCoverage.Data {
+		loc := &JsonApiGeolocation{}
+		relData.SpatialCoverage.Data[i].resolve(t, loc)
+		assert.Equal(t, expectedJson.SpatialCoverage[i], loc.JsonApiData[0].JsonApiAttributes.Name)
+	}
+
+	// Subject
+	assert.Equal(t, 2, len(expectedJson.Subject))
+	assert.Equal(t, len(expectedJson.Subject), len(relData.Subject.Data))
+	for i := range relData.Subject.Data {
+		subj := &JsonApiSubject{}
+		relData.Subject.Data[i].resolve(t, subj)
+		assert.Equal(t, expectedJson.Subject[i], subj.JsonApiData[0].JsonApiAttributes.Name)
+	}
+
+	// Table of Contents
+	assert.Equal(t, 2, len(expectedJson.TableOfContents))
+	assert.Equal(t, len(expectedJson.TableOfContents), len(relData.TableOfContents.Data))
+	for i := range relData.TableOfContents.Data {
+		assert.Equal(t, expectedJson.TableOfContents[i].LangCode, relData.TableOfContents.Data[i].langCode(t))
+		assert.Equal(t, expectedJson.TableOfContents[i].Value, relData.TableOfContents.Data[i].value())
+	}
 }
 
 func Test_VerifyMediaAndFile(t *testing.T) {
