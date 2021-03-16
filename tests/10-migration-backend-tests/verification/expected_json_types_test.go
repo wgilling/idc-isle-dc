@@ -54,20 +54,34 @@ type ExpectedRepoObj struct {
 	AccessRights     []string         `json:"access_rights"`
 	AltTitle         []LanguageString `json:"alt_title"`
 	CollectionNumber []string         `json:"collection_number"`
+	CopyrightAndUse  string           `json:"copyright_and_use"`
+	CopyrightHolder  []string         `json:"copyright_holder"`
 	Contributor      []struct {
 		RelType string `json:"rel_type"`
 		Name    string
 	}
-	Model        string
-	ResourceType []string `json:"resource_type"`
-	Title        string
-	MemberOf     []string `json:"member_of"`
-	Extent       []string
-	LinkedAgent  []struct {
+	Creator []struct {
+		RelType string `json:"rel_type"`
+		Name    string
+	}
+	DateAvailable     string   `json:"date_available"`
+	DateCopyrighted   []string `json:"date_copyrighted"`
+	DateCreated       []string `json:"date_created"`
+	DatePublished     []string `json:"date_published"`
+	DigitalIdentifier []string `json:"digital_identifier"`
+	DigitalPublisher  []string `json:"digital_publisher"`
+	DisplayHint       string   `json:"display_hint"`
+	DspaceIdentifier  string   `json:"dspace_identifier"`
+	DspaceItemId      string   `json:"dspace_itemid"`
+	Model             string
+	ResourceType      []string `json:"resource_type"`
+	Title             string
+	MemberOf          []string `json:"member_of"`
+	Extent            []string
+	LinkedAgent       []struct {
 		Rel  string
 		Name string
 	}
-	DisplayHint string `json:"display_hint"`
 	Description []struct {
 		Value    string
 		LangCode string `json:"language"`

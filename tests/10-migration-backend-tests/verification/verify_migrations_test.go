@@ -611,15 +611,44 @@ func Test_VerifyRepositoryItem(t *testing.T) {
 	assert.Equal(t, expectedJson.Title, attributes.Title)
 
 	// Collection Number
+	assert.Equal(t, 2, len(expectedJson.CollectionNumber))
 	assert.Equal(t, len(expectedJson.CollectionNumber), len(attributes.CollectionNumber))
 	for i := range attributes.CollectionNumber {
 		assert.Equal(t, expectedJson.CollectionNumber[i], attributes.CollectionNumber[i])
 	}
 
+	// Dates
+	assert.Equal(t, expectedJson.DateAvailable, attributes.DateAvailable)
+	assert.Equal(t, 2, len(expectedJson.DateCopyrighted))
+	assert.Equal(t, len(expectedJson.DateCopyrighted), len(attributes.DateCopyrighted))
+	for i := range attributes.DateCopyrighted {
+		assert.Equal(t, expectedJson.DateCopyrighted[i], attributes.DateCopyrighted[i])
+	}
+	assert.Equal(t, 2, len(expectedJson.DateCreated))
+	assert.Equal(t, len(expectedJson.DateCreated), len(attributes.DateCreated))
+	for i := range attributes.DateCreated {
+		assert.Equal(t, expectedJson.DateCreated[i], attributes.DateCreated[i])
+	}
+	assert.Equal(t, 2, len(expectedJson.DatePublished))
+	assert.Equal(t, len(expectedJson.DatePublished), len(attributes.DatePublished))
+	for i := range attributes.DatePublished {
+		assert.Equal(t, expectedJson.DatePublished[i], attributes.DatePublished[i])
+	}
+
+	// Identifiers
+	assert.Equal(t, 2, len(expectedJson.DigitalIdentifier))
+	assert.Equal(t, len(expectedJson.DigitalIdentifier), len(attributes.DigitalIdentifier))
+	for i := range attributes.DigitalIdentifier {
+		assert.Equal(t, expectedJson.DigitalIdentifier[i], attributes.DigitalIdentifier[i])
+	}
+	assert.Equal(t, expectedJson.DspaceIdentifier, attributes.DspaceIdentifier.Uri)
+	assert.Equal(t, expectedJson.DspaceItemId, attributes.DspaceItemid)
+
 	// Resolve and verify relationships
 	relData := actual.JsonApiRelationships
 
 	// Abstract
+	assert.Equal(t, 2, len(expectedJson.Abstract))
 	assert.Equal(t, len(expectedJson.Abstract), len(relData.Abstract.Data))
 	for i := range relData.Abstract.Data {
 		assert.Equal(t, expectedJson.Abstract[i].Value, relData.Abstract.Data[i].value())
@@ -627,6 +656,7 @@ func Test_VerifyRepositoryItem(t *testing.T) {
 	}
 
 	// Access Rights
+	assert.Equal(t, 2, len(expectedJson.AccessRights))
 	assert.Equal(t, len(expectedJson.AccessRights), len(relData.AccessRights.Data))
 	for i := range relData.AccessRights.Data {
 		expectedAccessRights := &JsonApiAccessRights{}
@@ -635,6 +665,7 @@ func Test_VerifyRepositoryItem(t *testing.T) {
 	}
 
 	// Alt title
+	assert.Equal(t, 2, len(expectedJson.AltTitle))
 	assert.Equal(t, len(expectedJson.AltTitle), len(relData.AltTitle.Data))
 	for i := range relData.AltTitle.Data {
 		assert.Equal(t, expectedJson.AltTitle[i].Value, relData.AltTitle.Data[i].value())
@@ -642,9 +673,10 @@ func Test_VerifyRepositoryItem(t *testing.T) {
 	}
 
 	// Contributor
+	// TODO: type introspection if Contributor can hold some type other than person
+	assert.Equal(t, 2, len(expectedJson.Contributor))
 	assert.Equal(t, len(expectedJson.Contributor), len(relData.Contributor.Data))
 	for i := range relData.Contributor.Data {
-		// TODO: type introspection if Contributor can hold some type other than person
 		actualPerson := &JsonApiPerson{}
 		relData.Contributor.Data[i].resolve(t, actualPerson)
 		actualRelType, err := relData.Contributor.Data[i].metaString("rel_type")
@@ -653,6 +685,51 @@ func Test_VerifyRepositoryItem(t *testing.T) {
 		assert.Equal(t, expectedJson.Contributor[i].Name, actualPerson.JsonApiData[0].JsonApiAttributes.Name)
 	}
 
+	// Copyright And Use
+	actualCopyrightAndUse := &JsonApiCopyrightAndUse{}
+	relData.CopyrightAndUse.Data.resolve(t, actualCopyrightAndUse)
+	assert.Equal(t, expectedJson.CopyrightAndUse, actualCopyrightAndUse.JsonApiData[0].JsonApiAttributes.Name)
+
+	// Copyright Holder
+	// TODO: type introspection if Copyright Holder can hold some type other than person
+	assert.Equal(t, 2, len(expectedJson.CopyrightHolder))
+	assert.Equal(t, len(expectedJson.CopyrightHolder), len(relData.CopyrightHolder.Data))
+	for i := range relData.CopyrightHolder.Data {
+		actualPerson := &JsonApiPerson{}
+		relData.CopyrightHolder.Data[i].resolve(t, actualPerson)
+		assert.Equal(t, expectedJson.CopyrightHolder[i], actualPerson.JsonApiData[0].JsonApiAttributes.Name)
+	}
+
+	// Creator
+	// TODO: type introspection if Creator can hold some type other than person
+	assert.Equal(t, 2, len(expectedJson.Creator))
+	assert.Equal(t, len(expectedJson.Creator), len(relData.Creator.Data))
+	for i := range relData.Creator.Data {
+		actualPerson := &JsonApiPerson{}
+		relData.Creator.Data[i].resolve(t, actualPerson)
+		actualRelType, err := relData.Creator.Data[i].metaString("rel_type")
+		assert.Nil(t, err)
+		assert.Equal(t, expectedJson.Creator[i].Name, actualPerson.JsonApiData[0].JsonApiAttributes.Name)
+		assert.Equal(t, expectedJson.Creator[i].RelType, actualRelType)
+	}
+
+	// Description
+	assert.Equal(t, 2, len(expectedJson.Description))
+	assert.Equal(t, len(expectedJson.Description), len(relData.Description.Data))
+	for i := range relData.Description.Data {
+		assert.Equal(t, expectedJson.Description[i].Value, relData.Description.Data[i].value())
+		assert.Equal(t, expectedJson.Description[i].LangCode, relData.Description.Data[i].langCode(t))
+	}
+
+	// Digital Publisher
+	// TODO: type introspection if Digital Publisher can hold some type other than corporate body
+	assert.Equal(t, 2, len(expectedJson.DigitalPublisher))
+	assert.Equal(t, len(expectedJson.DigitalPublisher), len(relData.DigitalPublisher.Data))
+	for i := range relData.DigitalPublisher.Data {
+		corpBod := &JsonApiCorporateBody{}
+		relData.DigitalPublisher.Data[i].resolve(t, corpBod)
+		assert.Equal(t, expectedJson.DigitalPublisher[i], corpBod.JsonApiData[0].JsonApiAttributes.Name)
+	}
 }
 
 func Test_VerifyMediaAndFile(t *testing.T) {

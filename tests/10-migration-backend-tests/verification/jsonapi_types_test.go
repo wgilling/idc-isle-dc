@@ -324,24 +324,21 @@ type JsonApiIslandoraObj struct {
 			Contributor struct {
 				Data []RelData
 			} `json:"field_contributor"`
-			Copyright struct {
+			CopyrightAndUse struct {
 				Data JsonApiData
 			} `json:"field_copyright_and_use"`
 			CopyrightHolder struct {
 				Data []JsonApiData
 			} `json:"field_copyright_holder"`
 			Creator struct {
-				Data []struct {
-					JsonApiData
-					Meta map[string]interface{}
-				}
+				Data []RelData
 			} `json:"field_creator"`
 			Description struct {
 				Data []JsonApiLanguageValue
 			} `json:"field_description"`
 			DigitalPublisher struct {
 				Data []JsonApiData
-			}
+			} `json:"field_digital_publisher"`
 			DisplayHints JsonApiData
 			Genre        struct {
 				Data []JsonApiData

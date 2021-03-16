@@ -40,7 +40,7 @@
       "name": "Adams, Islandora Object Ansel Easton, 1902-1984"
     }
   ],
-  "copyright": "Copyright Undetermined",
+  "copyright_and_use": "Copyright Undetermined",
   "copyright_holder": [
     "Weston, Islandora Object Edward, 1886-1958",
     "Adams, Islandora Object Ansel Easton, 1902-1984"
@@ -52,7 +52,7 @@
     },
     {
       "rel_type": "relators:pht",
-      "name": "Adams, Islandora Object Ansel Easton, 1902-1984"
+      "name": "Weston, Islandora Object Edward, 1886-1958"
     }
   ],
   "date_available": "2020-01-01",
@@ -83,8 +83,8 @@
     "a digital identifier two"
   ],
   "digital_publisher": [
-    "Ansel Adams Publishing Rights Trust",
-    "Johns Hopkins Sheridan Libraries"
+    "Johns Hopkins Sheridan Libraries",
+    "Ansel Adams Publishing Rights Trust"
   ],
   "display_hints": "Open Seadragon",
   "dspace_identifier": "http://jscholarship.library.jhu.edu",
