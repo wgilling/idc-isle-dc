@@ -641,6 +641,9 @@ func Test_VerifyRepositoryItem(t *testing.T) {
 	assert.Equal(t, expectedJson.DspaceIdentifier, attributes.DspaceIdentifier.Uri)
 	assert.Equal(t, expectedJson.DspaceItemId, attributes.DspaceItemid)
 
+	// Library Catalog Link
+	assert.EqualValues(t, expectedJson.LibraryCatalogLink, attributes.LibraryCatalogLink)
+
 	// Extent
 	assert.Equal(t, expectedJson.Extent, attributes.Extent)
 
@@ -742,6 +745,12 @@ func Test_VerifyRepositoryItem(t *testing.T) {
 		assert.Equal(t, expectedJson.Description[i].Value, relData.Description.Data[i].value())
 		assert.Equal(t, expectedJson.Description[i].LangCode, relData.Description.Data[i].langCode(t))
 	}
+
+	// Display Hint
+
+	hint := &JsonApiIslandoraDisplay{}
+	relData.DisplayHint.Data.resolve(t, hint)
+	assert.Equal(t, expectedJson.DisplayHint, hint.JsonApiData[0].JsonApiAttributes.Name)
 
 	// Digital Publisher
 	// TODO: type introspection if Digital Publisher can hold some type other than corporate body

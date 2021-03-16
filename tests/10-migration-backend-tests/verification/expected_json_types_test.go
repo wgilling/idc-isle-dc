@@ -70,7 +70,7 @@ type ExpectedRepoObj struct {
 	DatePublished     []string `json:"date_published"`
 	DigitalIdentifier []string `json:"digital_identifier"`
 	DigitalPublisher  []string `json:"digital_publisher"`
-	DisplayHint       string   `json:"display_hint"`
+	DisplayHint       string   `json:"display_hints"`
 	DspaceIdentifier  string   `json:"dspace_identifier"`
 	DspaceItemId      string   `json:"dspace_itemid"`
 	Extent            []string
@@ -83,11 +83,15 @@ type ExpectedRepoObj struct {
 		Uri   string
 		Title string
 	} `json:"geoportal_link"`
-	Issn        string
-	IsPartOf    string `json:"is_part_of"`
-	ItemBarcode string `json:"item_barcode"`
-	JhirUri     string `json:"jhir"`
-	Model       struct {
+	Issn               string
+	IsPartOf           string `json:"is_part_of"`
+	ItemBarcode        string `json:"item_barcode"`
+	JhirUri            string `json:"jhir"`
+	LibraryCatalogLink struct {
+		Uri   string
+		Title string
+	} `json:"field_library_catalog_link"`
+	Model struct {
 		Name        string
 		ExternalUri string `json:"external_uri"`
 	}

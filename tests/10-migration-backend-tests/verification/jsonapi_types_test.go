@@ -342,8 +342,7 @@ type JsonApiIslandoraObj struct {
 			DigitalPublisher struct {
 				Data []JsonApiData
 			} `json:"field_digital_publisher"`
-			DisplayHints JsonApiData
-			Genre        struct {
+			Genre struct {
 				Data []JsonApiData
 			} `json:"field_genre"`
 			Language struct {
@@ -580,6 +579,25 @@ type JsonApiCorporateBody struct {
 }
 
 type JsonApiIslandoraModel struct {
+	JsonApiData []struct {
+		Type              DrupalType
+		Id                string
+		JsonApiAttributes struct {
+			Name        string
+			Description struct {
+				Value     string
+				Format    string
+				Processed string
+			}
+			ExternalUri struct {
+				Uri   string
+				Title string
+			} `json:"field_external_uri"`
+		} `json:"attributes"`
+	} `json:"data"`
+}
+
+type JsonApiIslandoraDisplay struct {
 	JsonApiData []struct {
 		Type              DrupalType
 		Id                string
