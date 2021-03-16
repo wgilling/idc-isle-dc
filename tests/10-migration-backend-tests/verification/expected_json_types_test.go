@@ -22,19 +22,19 @@ func (t DrupalType) bundle() string {
 
 // Represents the expected results of a migrated person
 type ExpectedPerson struct {
-	Type          string
-	Bundle        string
-	Name          string `json:"name"`
-	PrimaryName   string `json:"primary_name"`
-	RestOfName    []string `json:"rest_of_name"`
-	FullerForm    []string `json:"fuller_form"`
-	Prefix        []string
-	Suffix        []string
-	Number        []string
-	AltName       []string `json:"alt_name"`
-	Date          []string
-	Knows         []string
-	Authority     []struct {
+	Type        string
+	Bundle      string
+	Name        string   `json:"name"`
+	PrimaryName string   `json:"primary_name"`
+	RestOfName  []string `json:"rest_of_name"`
+	FullerForm  []string `json:"fuller_form"`
+	Prefix      []string
+	Suffix      []string
+	Number      []string
+	AltName     []string `json:"alt_name"`
+	Date        []string
+	Knows       []string
+	Authority   []struct {
 		Uri  string
 		Name string
 		Type string
@@ -48,8 +48,16 @@ type ExpectedPerson struct {
 
 // Represents the expected results of a migrated repository object
 type ExpectedRepoObj struct {
-	Type         string
-	Bundle       string
+	Type             string
+	Bundle           string
+	Abstract         []LanguageString
+	AccessRights     []string         `json:"access_rights"`
+	AltTitle         []LanguageString `json:"alt_title"`
+	CollectionNumber []string         `json:"collection_number"`
+	Contributor      []struct {
+		RelType string `json:"rel_type"`
+		Name    string
+	}
 	Model        string
 	ResourceType []string `json:"resource_type"`
 	Title        string
@@ -246,13 +254,13 @@ type ExpectedCorporateBody struct {
 		Format    string
 		Processed string
 	}
-	PrimaryName        string `json:"primary_name"`
-	SubordinateName    []string `json:"subordinate_name"`
-	DateOfMeeting      []string `json:"date_of_meeting_or_treaty"`
-	Location           []string `json:"location_of_meeting"`
-	NumberOrSection    []string `json:"num_of_section_or_meet"`
-	AltName            []string `json:"corporate_body_alternate_name"`
-	Authority          []struct {
+	PrimaryName     string   `json:"primary_name"`
+	SubordinateName []string `json:"subordinate_name"`
+	DateOfMeeting   []string `json:"date_of_meeting_or_treaty"`
+	Location        []string `json:"location_of_meeting"`
+	NumberOrSection []string `json:"num_of_section_or_meet"`
+	AltName         []string `json:"corporate_body_alternate_name"`
+	Authority       []struct {
 		Uri    string
 		Title  string
 		Source string
@@ -262,4 +270,9 @@ type ExpectedCorporateBody struct {
 		Name string
 		Rel  string `json:"rel_type"`
 	} `json:"relationships"`
+}
+
+type LanguageString struct {
+	Value    string
+	LangCode string `json:"language"`
 }

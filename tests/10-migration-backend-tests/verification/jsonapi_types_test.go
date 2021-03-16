@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/stretchr/testify/assert"
 	"log"
@@ -112,7 +113,7 @@ type JsonApiPerson struct {
 		Type              DrupalType
 		Id                string
 		JsonApiAttributes struct {
-            Name        string   `json:"name"`
+			Name        string   `json:"name"`
 			Dates       []string `json:"field_date"`
 			Description struct {
 				Value     string
@@ -272,7 +273,7 @@ type JsonApiIslandoraObj struct {
 		Id                string
 		JsonApiAttributes struct {
 			Title             string
-			CollectionNumber  []string
+			CollectionNumber  []string `json:"field_collection_number"`
 			DateAvailable     string   `json:"field_date_available"`
 			DateCopyrighted   []string `json:"field_date_copyrighted"`
 			DateCreated       []string `json:"field_date_created"`
@@ -320,11 +321,8 @@ type JsonApiIslandoraObj struct {
 			AltTitle struct {
 				Data []JsonApiLanguageValue
 			} `json:"field_alternative_title"`
-			Contributor []struct {
-				Data []struct {
-					JsonApiData
-					Meta map[string]interface{}
-				}
+			Contributor struct {
+				Data []RelData
 			} `json:"field_contributor"`
 			Copyright struct {
 				Data JsonApiData
@@ -562,13 +560,13 @@ type JsonApiCorporateBody struct {
 				Title  string
 				Source string
 			} `json:"field_authority_link"`
-			PrimaryName        string     `json:"field_primary_name"`
-			SubordinateName    []string   `json:"field_subordinate_name"`
-			Location           []string   `json:"field_location_of_meeting"`
-			NumberOrSection    []string   `json:"field_num_of_section_or_meet"`
-			DateOfMeeting      []string   `json:"field_date_of_meeting_or_treaty"`
-			AltName            []string   `json:"field_corporate_body_alt_name"`
-			Date               []string   `json:"field_date"`
+			PrimaryName     string   `json:"field_primary_name"`
+			SubordinateName []string `json:"field_subordinate_name"`
+			Location        []string `json:"field_location_of_meeting"`
+			NumberOrSection []string `json:"field_num_of_section_or_meet"`
+			DateOfMeeting   []string `json:"field_date_of_meeting_or_treaty"`
+			AltName         []string `json:"field_corporate_body_alt_name"`
+			Date            []string `json:"field_date"`
 		} `json:"attributes"`
 		JsonApiRelationships struct {
 			Relationships struct {
@@ -579,4 +577,40 @@ type JsonApiCorporateBody struct {
 			} `json:"field_relationships"`
 		} `json:"relationships"`
 	} `json:"data"`
+}
+
+type RelData struct {
+	JsonApiData
+	Meta map[string]interface{}
+}
+
+type RelContributor struct {
+	Data []RelData
+}
+
+var ErrConversion = errors.New("cannot convert type")
+var ErrMissing = errors.New("missing field from meta")
+
+func (rd RelData) metaString(field string) (string, error) {
+	if value, exists := rd.Meta[field]; exists {
+		if strValue, ok := value.(string); ok {
+			return strValue, nil
+		} else {
+			return "", fmt.Errorf("%w: %v to string", ErrConversion, value)
+		}
+	}
+
+	return "", fmt.Errorf("%w: %s", ErrMissing, field)
+}
+
+func (rd RelData) metaInt(field string) (int, error) {
+	if value, exists := rd.Meta[field]; exists {
+		if intVal, ok := value.(int); ok {
+			return intVal, nil
+		} else {
+			return -1, fmt.Errorf("%w: %v to int", ErrConversion, value)
+		}
+	}
+
+	return -1, fmt.Errorf("%w: %s", ErrMissing, field)
 }

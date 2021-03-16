@@ -13,11 +13,8 @@
     }
   ],
   "access_rights": [
-    "Public digital access",
-    "Public Domain"
-  ],
-  "access_terms": [
-
+    "Public Domain",
+    "Public digital access"
   ],
   "alt_title": [
     {
@@ -36,26 +33,26 @@
   "contributor": [
     {
       "rel_type": "relators:art",
-      "name": "Ansel Islandora Object Adams"
+      "name": "Adams, Islandora Object Ansel Easton, 1902-1984"
     },
     {
       "rel_type": "relators:pht",
-      "name": "Ansel Islandora Object Adams"
+      "name": "Adams, Islandora Object Ansel Easton, 1902-1984"
     }
   ],
   "copyright": "Copyright Undetermined",
   "copyright_holder": [
-    "Ansel Adams Publishing Rights Trust",
-    "Ansel Islandora Object Adams"
+    "Weston, Islandora Object Edward, 1886-1958",
+    "Adams, Islandora Object Ansel Easton, 1902-1984"
   ],
   "creator": [
     {
       "rel_type": "relators:art",
-      "name": "Edward Islandora Object Weston"
+      "name": "Adams, Islandora Object Ansel Easton, 1902-1984"
     },
     {
       "rel_type": "relators:pht",
-      "name": "Galen Islandora Object Rowell"
+      "name": "Adams, Islandora Object Ansel Easton, 1902-1984"
     }
   ],
   "date_available": "2020-01-01",
@@ -100,10 +97,6 @@
     {
       "uri": "http://www.google.com",
       "title": "Google Finding Aid"
-    },
-    {
-      "uri": "http://wikipedia.org",
-      "title": "Wikipedia Finding Aid"
     }
   ],
   "genre": [
@@ -115,7 +108,7 @@
     "title": "geoblacklight link"
   },
   "issn": "12345678",
-  "is_part_of": "",
+  "is_part_of": "https://en.wikipedia.org/wiki/San_Rafael_Reef",
   "item_barcode": "123456",
   "jhir": "http://jhir.jhu.edu",
   "language": [
@@ -127,8 +120,8 @@
     "title": "Library Catalog Link"
   },
   "member_of": [
-    "Original File",
-    "Intermediate File"
+    "Images Collection",
+    "Ansel Adams"
   ],
   "model": "Image",
   "oclc_number": [
@@ -147,7 +140,10 @@
     "Dataset",
     "Image"
   ],
-  "spatial_coverage": "Hernandez, NM",
+  "spatial_coverage": [
+    "Hernandez, NM",
+    "San Rafael Reef, UT"
+  ],
   "subject": [
     "Analog Islandora Object Photography",
     "General Islandora Object Photography"
