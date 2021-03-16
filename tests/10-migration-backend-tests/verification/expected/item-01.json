@@ -93,15 +93,13 @@
     "1 item",
     "one image file"
   ],
-  "finding_aid": [
-    {
-      "uri": "http://www.google.com",
-      "title": "Google Finding Aid"
-    }
-  ],
+  "finding_aid": {
+    "uri": "http://www.google.com",
+    "title": "Google Finding Aid"
+  },
   "genre": [
-    "Analog",
-    "Nature"
+    "Nature",
+    "Analog"
   ],
   "geoportal_link": {
     "uri": "http://catalyst.library.jhu.edu",
@@ -123,22 +121,25 @@
     "Images Collection",
     "Ansel Adams"
   ],
-  "model": "Image",
+  "model": {
+    "name": "Image",
+    "external_uri": "http://purl.org/coar/resource_type/c_c513"
+  },
   "oclc_number": [
-    "oclc one",
-    "oclc two"
+    "oclc_one",
+    "oclc_two"
   ],
   "publisher": [
-    "Ansel Adams Publishing Rights Trust",
-    "Johns Hopkins Sheridan Libraries"
+    "Johns Hopkins Sheridan Libraries",
+    "Ansel Adams Publishing Rights Trust"
   ],
   "publisher_country": [
-    "Mountain Light Gallery",
-    "Nevada"
+    "Nevada",
+    "Mountain Light Gallery"
   ],
   "resource_type": [
-    "Dataset",
-    "Image"
+    "Image",
+    "Dataset"
   ],
   "spatial_coverage": [
     "Hernandez, NM",

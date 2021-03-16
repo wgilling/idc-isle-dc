@@ -73,12 +73,31 @@ type ExpectedRepoObj struct {
 	DisplayHint       string   `json:"display_hint"`
 	DspaceIdentifier  string   `json:"dspace_identifier"`
 	DspaceItemId      string   `json:"dspace_itemid"`
-	Model             string
-	ResourceType      []string `json:"resource_type"`
-	Title             string
-	MemberOf          []string `json:"member_of"`
 	Extent            []string
-	LinkedAgent       []struct {
+	FindingAid        struct {
+		Uri   string
+		Title string
+	} `json:"finding_aid"`
+	Genre         []string
+	GeoportalLink struct {
+		Uri   string
+		Title string
+	} `json:"geoportal_link"`
+	Issn        string
+	IsPartOf    string `json:"is_part_of"`
+	ItemBarcode string `json:"item_barcode"`
+	JhirUri     string `json:"jhir"`
+	Model       struct {
+		Name        string
+		ExternalUri string `json:"external_uri"`
+	}
+	OclcNumber       []string `json:"oclc_number"`
+	Publisher        []string
+	PublisherCountry []string `json:"publisher_country"`
+	ResourceType     []string `json:"resource_type"`
+	Title            string
+	MemberOf         []string `json:"member_of"`
+	LinkedAgent      []struct {
 		Rel  string
 		Name string
 	}

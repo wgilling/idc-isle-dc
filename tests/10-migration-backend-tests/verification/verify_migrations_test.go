@@ -637,12 +637,34 @@ func Test_VerifyRepositoryItem(t *testing.T) {
 
 	// Identifiers
 	assert.Equal(t, 2, len(expectedJson.DigitalIdentifier))
-	assert.Equal(t, len(expectedJson.DigitalIdentifier), len(attributes.DigitalIdentifier))
-	for i := range attributes.DigitalIdentifier {
-		assert.Equal(t, expectedJson.DigitalIdentifier[i], attributes.DigitalIdentifier[i])
-	}
+	assert.EqualValues(t, expectedJson.DigitalIdentifier, attributes.DigitalIdentifier)
 	assert.Equal(t, expectedJson.DspaceIdentifier, attributes.DspaceIdentifier.Uri)
 	assert.Equal(t, expectedJson.DspaceItemId, attributes.DspaceItemid)
+
+	// Extent
+	assert.Equal(t, expectedJson.Extent, attributes.Extent)
+
+	// Finding Aid
+	assert.EqualValues(t, expectedJson.FindingAid, attributes.FindingAid)
+
+	// Geoportal Link
+	assert.EqualValues(t, expectedJson.GeoportalLink, attributes.GeoportalLink)
+
+	// Issn
+	assert.Equal(t, expectedJson.Issn, attributes.Issn)
+
+	// Is Part Of
+	assert.Equal(t, expectedJson.IsPartOf, attributes.IsPartOf.Uri)
+
+	// Item Barcode
+	assert.Equal(t, expectedJson.ItemBarcode, attributes.ItemBarcode)
+
+	// JHIR
+	assert.Equal(t, expectedJson.JhirUri, attributes.JhirUri.Uri)
+
+	// OCLC
+	assert.Equal(t, 2, len(expectedJson.OclcNumber))
+	assert.EqualValues(t, expectedJson.OclcNumber, attributes.OclcNumber)
 
 	// Resolve and verify relationships
 	relData := actual.JsonApiRelationships
@@ -730,6 +752,59 @@ func Test_VerifyRepositoryItem(t *testing.T) {
 		relData.DigitalPublisher.Data[i].resolve(t, corpBod)
 		assert.Equal(t, expectedJson.DigitalPublisher[i], corpBod.JsonApiData[0].JsonApiAttributes.Name)
 	}
+
+	// Genre
+	assert.Equal(t, 2, len(expectedJson.Genre))
+	assert.Equal(t, len(expectedJson.Genre), len(relData.Genre.Data))
+	for i := range relData.Genre.Data {
+		genre := &JsonApiGenre{}
+		relData.Genre.Data[i].resolve(t, genre)
+		assert.Equal(t, expectedJson.Genre[i], genre.JsonApiData[0].JsonApiAttributes.Name)
+	}
+
+	// Member Of
+	assert.Equal(t, 2, len(expectedJson.MemberOf))
+	assert.Equal(t, len(expectedJson.MemberOf), len(relData.MemberOf.Data))
+	for i := range relData.MemberOf.Data {
+		collection := &JsonApiCollection{}
+		relData.MemberOf.Data[i].resolve(t, collection)
+		assert.Equal(t, expectedJson.MemberOf[i], collection.JsonApiData[0].JsonApiAttributes.Title)
+	}
+
+	// Model
+	model := &JsonApiIslandoraModel{}
+	relData.Model.Data.resolve(t, model)
+	assert.Equal(t, expectedJson.Model.Name, model.JsonApiData[0].JsonApiAttributes.Name)
+	assert.Equal(t, expectedJson.Model.ExternalUri, model.JsonApiData[0].JsonApiAttributes.ExternalUri.Uri)
+
+	// Publisher
+	// TODO: introspect on type if field value will be anything other than a corporate body
+	assert.Equal(t, 2, len(expectedJson.Publisher))
+	assert.EqualValues(t, len(expectedJson.Publisher), len(relData.Publisher.Data))
+	for i := range relData.Publisher.Data {
+		pub := &JsonApiCorporateBody{}
+		relData.Publisher.Data[i].resolve(t, pub)
+		assert.Equal(t, expectedJson.Publisher[i], pub.JsonApiData[0].JsonApiAttributes.Name)
+	}
+
+	// Publisher Country (but really can be any geolocation)
+	assert.Equal(t, 2, len(expectedJson.PublisherCountry))
+	assert.EqualValues(t, len(expectedJson.PublisherCountry), len(relData.PublisherCountry.Data))
+	for i := range relData.PublisherCountry.Data {
+		loc := &JsonApiGeolocation{}
+		relData.PublisherCountry.Data[i].resolve(t, loc)
+		assert.Equal(t, expectedJson.PublisherCountry[i], loc.JsonApiData[0].JsonApiAttributes.Name)
+	}
+
+	// Resource Type
+	assert.Equal(t, 2, len(expectedJson.ResourceType))
+	assert.Equal(t, len(expectedJson.ResourceType), len(relData.ResourceType.Data))
+	for i := range relData.ResourceType.Data {
+		resource := &JsonApiResourceType{}
+		relData.ResourceType.Data[i].resolve(t, resource)
+		assert.Equal(t, expectedJson.ResourceType[i], resource.JsonApiData[0].JsonApiAttributes.Name)
+	}
+
 }
 
 func Test_VerifyMediaAndFile(t *testing.T) {

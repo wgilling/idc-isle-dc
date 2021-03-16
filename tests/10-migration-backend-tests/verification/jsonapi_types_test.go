@@ -286,26 +286,29 @@ type JsonApiIslandoraObj struct {
 			DspaceItemid string `json:"field_dspace_item_id"`
 			Description  string
 			Extent       []string `json:"field_extent"`
-			FindingAid   []struct {
+			FindingAid   struct {
 				Uri   string
 				Title string
-			}
+			} `json:"field_finding_aid"`
 			GeoportalLink struct {
 				Uri   string
 				Title string
-			}
+			} `json:"field_geoportal_link"`
 			// TODO
-			IsPartOf    string
-			Issn        string
-			ItemBarcode string
+			IsPartOf struct {
+				Uri string
+			} `json:"field_is_part_of"`
+			Issn        string `json:"field_issn"`
+			ItemBarcode string `json:"field_item_barcode"`
 			JhirUri     struct {
 				Uri   string
 				Title string
-			}
+			} `json:"field_jhir"`
 			LibraryCatalogLink struct {
 				Uri   string
 				Title string
 			}
+			OclcNumber []string `json:"field_oclc_number"`
 		} `json:"attributes"`
 		JsonApiRelationships struct {
 			Abstract struct {
@@ -342,7 +345,7 @@ type JsonApiIslandoraObj struct {
 			DisplayHints JsonApiData
 			Genre        struct {
 				Data []JsonApiData
-			}
+			} `json:"field_genre"`
 			Language struct {
 				Data []JsonApiData
 			}
@@ -573,6 +576,25 @@ type JsonApiCorporateBody struct {
 				}
 			} `json:"field_relationships"`
 		} `json:"relationships"`
+	} `json:"data"`
+}
+
+type JsonApiIslandoraModel struct {
+	JsonApiData []struct {
+		Type              DrupalType
+		Id                string
+		JsonApiAttributes struct {
+			Name        string
+			Description struct {
+				Value     string
+				Format    string
+				Processed string
+			}
+			ExternalUri struct {
+				Uri   string
+				Title string
+			} `json:"field_external_uri"`
+		} `json:"attributes"`
 	} `json:"data"`
 }
 
