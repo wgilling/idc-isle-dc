@@ -64,34 +64,25 @@ type ExpectedRepoObj struct {
 		RelType string `json:"rel_type"`
 		Name    string
 	}
-	DateAvailable     string   `json:"date_available"`
-	DateCopyrighted   []string `json:"date_copyrighted"`
-	DateCreated       []string `json:"date_created"`
-	DatePublished     []string `json:"date_published"`
-	DigitalIdentifier []string `json:"digital_identifier"`
-	DigitalPublisher  []string `json:"digital_publisher"`
-	DisplayHint       string   `json:"display_hints"`
-	DspaceIdentifier  string   `json:"dspace_identifier"`
-	DspaceItemId      string   `json:"dspace_itemid"`
-	Extent            []string
-	FindingAid        struct {
-		Uri   string
-		Title string
-	} `json:"finding_aid"`
-	Genre         []string
-	GeoportalLink struct {
-		Uri   string
-		Title string
-	} `json:"geoportal_link"`
+	DateAvailable      string   `json:"date_available"`
+	DateCopyrighted    []string `json:"date_copyrighted"`
+	DateCreated        []string `json:"date_created"`
+	DatePublished      []string `json:"date_published"`
+	DigitalIdentifier  []string `json:"digital_identifier"`
+	DigitalPublisher   []string `json:"digital_publisher"`
+	DisplayHint        string   `json:"display_hints"`
+	DspaceIdentifier   string   `json:"dspace_identifier"`
+	DspaceItemId       string   `json:"dspace_itemid"`
+	Extent             []string
+	FindingAid         string `json:"finding_aid"`
+	Genre              []string
+	GeoportalLink      string `json:"geoportal_link"`
 	Issn               string
 	IsPartOf           string `json:"is_part_of"`
 	ItemBarcode        string `json:"item_barcode"`
 	JhirUri            string `json:"jhir"`
-	LibraryCatalogLink struct {
-		Uri   string
-		Title string
-	} `json:"field_library_catalog_link"`
-	Model struct {
+	LibraryCatalogLink string `json:"catalog_link"`
+	Model              struct {
 		Name        string
 		ExternalUri string `json:"external_uri"`
 	}

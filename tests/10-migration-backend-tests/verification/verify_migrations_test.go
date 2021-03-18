@@ -642,16 +642,16 @@ func Test_VerifyRepositoryItem(t *testing.T) {
 	assert.Equal(t, expectedJson.DspaceItemId, attributes.DspaceItemid)
 
 	// Library Catalog Link
-	assert.EqualValues(t, expectedJson.LibraryCatalogLink, attributes.LibraryCatalogLink)
+	assert.Equal(t, expectedJson.LibraryCatalogLink, attributes.LibraryCatalogLink.Uri)
 
 	// Extent
 	assert.Equal(t, expectedJson.Extent, attributes.Extent)
 
 	// Finding Aid
-	assert.EqualValues(t, expectedJson.FindingAid, attributes.FindingAid)
+	assert.Equal(t, expectedJson.FindingAid, attributes.FindingAid.Uri)
 
 	// Geoportal Link
-	assert.EqualValues(t, expectedJson.GeoportalLink, attributes.GeoportalLink)
+	assert.Equal(t, expectedJson.GeoportalLink, attributes.GeoportalLink.Uri)
 
 	// Issn
 	assert.Equal(t, expectedJson.Issn, attributes.Issn)

@@ -93,18 +93,12 @@
     "1 item",
     "one image file"
   ],
-  "finding_aid": {
-    "uri": "http://www.google.com",
-    "title": "Google Finding Aid"
-  },
+  "finding_aid": "http://www.google.com",
   "genre": [
     "Nature",
     "Analog"
   ],
-  "geoportal_link": {
-    "uri": "http://catalyst.library.jhu.edu",
-    "title": "geoblacklight link"
-  },
+  "geoportal_link": "http://catalyst.library.jhu.edu",
   "issn": "12345678",
   "is_part_of": "https://en.wikipedia.org/wiki/San_Rafael_Reef",
   "item_barcode": "123456",
@@ -113,10 +107,7 @@
     "English",
     "German"
   ],
-  "catalog_link": {
-    "uri": "http://catalog.library.jhu.edu",
-    "title": "Library Catalog Link"
-  },
+  "catalog_link": "http://catalog.library.jhu.edu",
   "member_of": [
     "Images Collection",
     "Ansel Adams"

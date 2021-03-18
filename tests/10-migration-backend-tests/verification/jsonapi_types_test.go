@@ -307,7 +307,7 @@ type JsonApiIslandoraObj struct {
 			LibraryCatalogLink struct {
 				Uri   string
 				Title string
-			}
+			} `json:"field_library_catalog_link"`
 			OclcNumber []string `json:"field_oclc_number"`
 		} `json:"attributes"`
 		JsonApiRelationships struct {

@@ -277,36 +277,7 @@ process:
     - plugin: explode
       delimiter: '|'
       strict: false
-  field_finding_aid:
-    - plugin: skip_on_empty
-      method: process
-      source: finding_aid
-    - plugin: explode
-      delimiter: '|'
-      strict: false
-    - plugin: deepen
-    - plugin: sub_process
-      process:
-        uri:
-          - plugin: skip_on_empty
-            method: process
-            source: value
-          - plugin: explode
-            source: value
-            delimiter: ';'
-          - plugin: extract
-            index:
-              - 0
-        title:
-          - plugin: skip_on_empty
-            method: process
-            source: value
-          - plugin: explode
-            source: value
-            delimiter: ';'
-          - plugin: extract
-            index:
-              - 1
+  field_finding_aid/uri: finding_aid
   field_genre:
     - plugin: skip_on_empty
       method: process
@@ -319,26 +290,7 @@ process:
       bundle: genre
       bundle_key: vid
       value_key: name
-  field_geoportal_link/uri:
-    - plugin: skip_on_empty
-      method: process
-      source: geoportal_link
-    - plugin: explode
-      delimiter: ';'
-      strict: false
-    - plugin: extract
-      index:
-        - 0
-  field_geoportal_link/title:
-    - plugin: skip_on_empty
-      method: process
-      source: geoportal_link
-    - plugin: explode
-      delimiter: ';'
-      strict: false
-    - plugin: extract
-      index:
-        - 1
+  field_geoportal_link/uri: geoportal_link
   field_issn: issn
   field_is_part_of: is_part_of
   field_item_barcode: item_barcode
@@ -356,26 +308,7 @@ process:
       bundle: language
       bundle_key: vid
       value_key: name
-  field_library_catalog_link/uri:
-    - plugin: skip_on_empty
-      method: process
-      source: library_catalog_link
-    - plugin: explode
-      delimiter: ';'
-      strict: false
-    - plugin: extract
-      index:
-        - 0
-  field_library_catalog_link/title:
-    - plugin: skip_on_empty
-      method: process
-      source: library_catalog_link
-    - plugin: explode
-      delimiter: ';'
-      strict: false
-    - plugin: extract
-      index:
-        - 1
+  field_library_catalog_link/uri: library_catalog_link
   field_member_of:
     - plugin: skip_on_empty
       method: process
