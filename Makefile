@@ -88,7 +88,7 @@ OVERRIDE_SERVICE_ENVIRONMENT_VARIABLES=$(shell \
 # definition for `gateway` will be overriden.
 SERVICES := $(REQUIRED_SERIVCES) $(WATCHTOWER_SERVICE) $(ETCD_SERVICE) $(DATABASE_SERVICES) $(SAML_SERVICE) $(ENVIRONMENT) $(TRAEFIK_SERVICE) $(OVERRIDE_SERVICE_ENVIRONMENT_VARIABLES)
 
-default: download-default-certs docker-compose.yml pull
+default: docker-compose.yml pull
 
 .SILENT: docker-compose.yml
 docker-compose.yml: $(SERVICES:%=docker-compose.%.yml) .env
@@ -291,22 +291,9 @@ endif
 		$(REPOSITORY)/drupal:$(TAG) -r \
 		'echo password_hash(md5("$(MATOMO_USER_PASS)"), PASSWORD_DEFAULT) . "\n";'
 
-# Helper function to generate keys for the user to use in their docker-compose.env.yml
-.PHONY: download-default-certs
-.SILENT: download-default-certs
-download-default-certs:
-	mkdir -p certs
-	if [ ! -f certs/cert.pem ]; then \
-		curl http://traefik.me/fullchain.pem -o certs/cert.pem; \
-	fi
-	if [ ! -f certs/privkey.pem ]; then \
-		curl http://traefik.me/privkey.pem -o certs/privkey.pem; \
-	fi
-
 .PHONY: dev
 .SILENT: dev
 dev:
-	$(MAKE) download-default-certs
 	$(MAKE) create-codebase-from-demo
 	if grep -q DRUPAL_DEFAULT_CONFIGDIR docker-compose.env.yml; then \
 		sed -i 's/DRUPAL_DEFAULT_CONFIGDIR:.*/DRUPAL_DEFAULT_CONFIGDIR: \/var\/www\/drupal\/config\/sync/g' docker-compose.env.yml; \
