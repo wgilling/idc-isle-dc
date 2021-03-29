@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -24,6 +25,14 @@ const (
 	// TODO: consult env
 	DrupalBaseurl = "https://islandora-idc.traefik.me"
 )
+
+var httpClient = http.Client{
+	Transport: &http.Transport{
+		TLSClientConfig: &tls.Config{
+			InsecureSkipVerify: true,
+		},
+	},
+}
 
 // Verifies that the Person migrated by testcafe persons-01.csv and persons-02.csv
 // match the expected fields and values present in taxonomy-person-01.json
@@ -914,7 +923,7 @@ func unmarshalSingleResponse(t *testing.T, body []byte, res *http.Response, valu
 
 // Successfully GET the content at the URL and return the response and body.
 func getResource(t *testing.T, u string) (*http.Response, []byte) {
-	res, err := http.Get(u)
+	res, err := httpClient.Get(u)
 	log.Printf("Retrieving %s", u)
 	assert.Nil(t, err, "encountered error requesting %s: %s", u, err)
 	assert.Equal(t, 200, res.StatusCode, "%d status encountered when requesting %s", res.StatusCode, u)
