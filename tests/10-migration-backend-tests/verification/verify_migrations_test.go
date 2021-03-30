@@ -925,9 +925,10 @@ func unmarshalSingleResponse(t *testing.T, body []byte, res *http.Response, valu
 func getResource(t *testing.T, u string) (*http.Response, []byte) {
 	res, err := httpClient.Get(u)
 	log.Printf("Retrieving %s", u)
-	assert.Nil(t, err, "encountered error requesting %s: %s", u, err)
-	assert.Equal(t, 200, res.StatusCode, "%d status encountered when requesting %s", res.StatusCode, u)
+	assert.Nil(t, err, "encountered error requesting '%s': '%s'", u, err)
 	body, err := ioutil.ReadAll(res.Body)
-	assert.Nil(t, err, "error encountered reading response body from %s: %s", u, err)
+	defer res.Body.Close()
+	assert.Equal(t, 200, res.StatusCode, "%d status encountered when requesting '%s'; response body: '%s'", res.StatusCode, u, string(body))
+	assert.Nil(t, err, "error encountered reading response body from '%s': '%s'", u, err)
 	return res, body
 }
