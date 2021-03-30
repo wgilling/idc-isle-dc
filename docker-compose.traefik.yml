@@ -23,6 +23,8 @@ services:
       --api.insecure=true
       --api.dashboard=true
       --api.debug=true
+      --accesslog=true
+      --log.level=INFO
       --entryPoints.http.address=:80
       --entryPoints.https.address=:443
       --entryPoints.mysql.address=:3306
