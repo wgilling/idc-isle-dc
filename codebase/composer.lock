@@ -3546,6 +3546,56 @@
             "time": "2020-08-07T22:30:30+00:00"
         },
         {
+            "name": "drupal/csv_serialization",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/csv_serialization.git",
+                "reference": "8.x-2.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/csv_serialization-8.x-2.0.zip",
+                "reference": "8.x-2.0",
+                "shasum": "3531383a6926a4ed761be56553997c2a937449ac"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9",
+                "league/csv": "^9.1"
+            },
+            "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
+                "drupal/coder": "^8.3"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-2.0",
+                    "datestamp": "1612801962",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Matthew Grasmick",
+                    "homepage": "https://www.drupal.org/user/455714"
+                }
+            ],
+            "description": "Provides CSV as a serialization format.",
+            "homepage": "https://www.drupal.org/project/csv_serialization",
+            "support": {
+                "source": "http://cgit.drupalcode.org/csv_serialization",
+                "issues": "https://www.drupal.org/project/issues/csv_serialization"
+            }
+        },
+        {
             "name": "drupal/devel",
             "version": "2.1.0",
             "source": {
@@ -6168,6 +6218,75 @@
             }
         },
         {
+            "name": "drupal/views_data_export",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/views_data_export.git",
+                "reference": "8.x-1.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/views_data_export-8.x-1.0.zip",
+                "reference": "8.x-1.0",
+                "shasum": "f1d16fd06ee7574f680e30f6bf5d6a152e3e9f42"
+            },
+            "require": {
+                "drupal/core": "^8.8 || ^9",
+                "drupal/csv_serialization": "~1.4 || ~2.0"
+            },
+            "require-dev": {
+                "drupal/search_api": "~1.12",
+                "drupal/xls_serialization": "~1.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.0",
+                    "datestamp": "1592589996",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Steven Jones",
+                    "homepage": "https://www.drupal.org/user/99644"
+                },
+                {
+                    "name": "amoebanath",
+                    "homepage": "https://www.drupal.org/user/2810799"
+                },
+                {
+                    "name": "james.williams",
+                    "homepage": "https://www.drupal.org/user/592268"
+                },
+                {
+                    "name": "jamsilver",
+                    "homepage": "https://www.drupal.org/user/476732"
+                },
+                {
+                    "name": "jhedstrom",
+                    "homepage": "https://www.drupal.org/user/208732"
+                },
+                {
+                    "name": "nerdstein",
+                    "homepage": "https://www.drupal.org/user/1557710"
+                }
+            ],
+            "description": "Plugin to export views data into various file formats.",
+            "homepage": "https://www.drupal.org/project/views_data_export",
+            "support": {
+                "source": "https://git.drupalcode.org/project/views_data_export"
+            }
+        },
+        {
             "name": "drupal/workbench",
             "version": "1.3.0",
             "source": {
@@ -7550,6 +7669,36 @@
                 "issues": "https://github.com/jhu-idc/idc-ui-theme/issues"
             },
             "time": "2021-05-24T15:54:58+00:00"
+        },
+        {
+            "name": "jhu-idc/idc_export",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jhu-idc/idc_export.git",
+                "reference": "b874afeccd17133104a5d56f9ae09e31733c535b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jhu-idc/idc_export/zipball/b874afeccd17133104a5d56f9ae09e31733c535b",
+                "reference": "b874afeccd17133104a5d56f9ae09e31733c535b",
+                "shasum": ""
+            },
+            "require": {
+                "drupal/csv_serialization": "~1.4 || ~2.0",
+                "seboettg/citeproc-php": "^2"
+            },
+            "require-dev": {
+                "drupal/search_api": "~1.12",
+                "drupal/xls_serialization": "~1.0"
+            },
+            "type": "drupal-module",
+            "description": "Metadata and Citation Export Module for JHU Islandora",
+            "support": {
+                "source": "https://github.com/jhu-idc/idc_export/tree/main",
+                "issues": "https://github.com/jhu-idc/idc_export/issues"
+            },
+            "time": "2021-04-29T20:41:34+00:00"
         },
         {
             "name": "jhu-idc/idc_ui_module",
@@ -9918,6 +10067,89 @@
                 "xmldsig"
             ],
             "time": "2020-04-22T17:19:51+00:00"
+        },
+        {
+            "name": "seboettg/citeproc-php",
+            "version": "v2.1.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/seboettg/citeproc-php.git",
+                "reference": "2e47cad09ab245d659fb57d3418ca31b98d57134"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/seboettg/citeproc-php/zipball/2e47cad09ab245d659fb57d3418ca31b98d57134",
+                "reference": "2e47cad09ab245d659fb57d3418ca31b98d57134",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-simplexml": "*",
+                "myclabs/php-enum": "^1.5",
+                "seboettg/collection": "^1.2",
+                "symfony/polyfill-mbstring": "^1.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "6.0.13",
+                "satooshi/php-coveralls": "^1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Böttger",
+                    "email": "seboettg@gmail.com",
+                    "homepage": "http://sebastianboettger.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Full-featured CSL processor (https://citationstyles.org)",
+            "time": "2018-10-13T18:02:57+00:00"
+        },
+        {
+            "name": "seboettg/collection",
+            "version": "v1.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/seboettg/Collection.git",
+                "reference": "7f0bbf93dba9b261f6d8c725a4f1583f4402162a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/seboettg/Collection/zipball/7f0bbf93dba9b261f6d8c725a4f1583f4402162a",
+                "reference": "7f0bbf93dba9b261f6d8c725a4f1583f4402162a",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "6.5.*",
+                "satooshi/php-coveralls": "^v2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Seboettg\\Collection\\": "src/Seboettg/Collection"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Böttger",
+                    "email": "seboettg@gmail.com"
+                }
+            ],
+            "description": "Simple PHP ArrayList collection",
+            "time": "2019-02-13T07:13:15+00:00"
         },
         {
             "name": "sibyx/phpgpx",
@@ -17911,6 +18143,7 @@
         "islandora-rdm/islandora_fits": 20,
         "islandora/carapace": 20,
         "jhu-idc/idc-ui-theme": 20,
+        "jhu-idc/idc_export": 20,
         "jhu-idc/idc_ui_module": 20,
         "jhu-idc/islandora_defaults": 20
     },
