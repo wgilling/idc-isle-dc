@@ -15,6 +15,7 @@ source:
     - local_id
   path: 'Will be populated by the Migrate Source UI'
 process:
+  nid: id
   title: title
   field_abstract:
     -
@@ -407,6 +408,7 @@ process:
       delimiter: '|'
       strict: false
   field_finding_aid/uri: finding_aid
+  field_featured_item: featured_item
   field_genre:
     -
       plugin: skip_on_empty
