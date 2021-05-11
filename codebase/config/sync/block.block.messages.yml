@@ -1,0 +1,37 @@
+uuid: 8ee891cc-9313-477d-9ae5-8adadd156885
+langcode: en
+status: true
+dependencies:
+  module:
+    - context
+    - islandora
+    - system
+  theme:
+    - idcui
+id: messages
+theme: idcui
+region: content
+weight: -9
+provider: null
+plugin: system_messages_block
+settings:
+  id: system_messages_block
+  label: Messages
+  provider: system
+  label_display: '0'
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    pages: ''
+    negate: null
+    context_mapping: {  }
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
+    context_mapping: {  }
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }
