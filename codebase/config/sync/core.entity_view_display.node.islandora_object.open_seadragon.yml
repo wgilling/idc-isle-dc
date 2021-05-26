@@ -225,26 +225,6 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-  field_dspace_identifier:
-    type: link
-    weight: 44
-    region: content
-    label: above
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
-    third_party_settings: {  }
-  field_dspace_item_id:
-    type: string
-    weight: 43
-    region: content
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
   field_extent:
     type: string
     weight: 38
@@ -322,18 +302,6 @@ content:
     label: above
     settings:
       link_to_entity: false
-    third_party_settings: {  }
-  field_jhir:
-    type: link
-    weight: 42
-    region: content
-    label: above
-    settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
     third_party_settings: {  }
   field_language:
     type: entity_reference_label
@@ -478,7 +446,10 @@ hidden:
   display_media_thumbnail: true
   field_access_terms: true
   field_display_hints: true
+  field_dspace_identifier: true
+  field_dspace_item_id: true
   field_gemini_uri: true
+  field_jhir: true
   field_weight: true
   openseadragon_media_evas_entity_view_2: true
   openseadragon_media_evas_service_file: true
