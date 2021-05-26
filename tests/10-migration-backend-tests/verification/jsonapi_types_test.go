@@ -320,6 +320,7 @@ type JsonApiIslandoraObj struct {
 			DspaceItemid string `json:"field_dspace_item_id"`
 			Description  string
 			Extent       []string `json:"field_extent"`
+			FeaturedItem int  `json:"featured_item"`
 			FindingAid   struct {
 				Uri   string
 				Title string

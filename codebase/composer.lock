@@ -7770,12 +7770,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jhu-idc/idc_export.git",
-                "reference": "eedb2ac996a593193b43337a6dfa9f5791aaa3ca"
+                "reference": "61b5ef3115bf05c9aa6f851a56e65c4ac8e8d895"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jhu-idc/idc_export/zipball/eedb2ac996a593193b43337a6dfa9f5791aaa3ca",
-                "reference": "eedb2ac996a593193b43337a6dfa9f5791aaa3ca",
+                "url": "https://api.github.com/repos/jhu-idc/idc_export/zipball/61b5ef3115bf05c9aa6f851a56e65c4ac8e8d895",
+                "reference": "61b5ef3115bf05c9aa6f851a56e65c4ac8e8d895",
                 "shasum": ""
             },
             "require": {
@@ -7794,7 +7794,7 @@
                 "source": "https://github.com/jhu-idc/idc_export/tree/main",
                 "issues": "https://github.com/jhu-idc/idc_export/issues"
             },
-            "time": "2021-05-10T18:14:14+00:00"
+            "time": "2021-05-25T21:48:27+00:00"
         },
         {
             "name": "jhu-idc/idc_ui_module",

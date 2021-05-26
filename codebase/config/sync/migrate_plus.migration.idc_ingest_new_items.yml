@@ -13,9 +13,10 @@ source:
   plugin: csv
   ids:
     - local_id
+    - node_id
   path: 'Will be populated by the Migrate Source UI'
 process:
-  nid: id
+  nid: node_id
   title: title
   field_abstract:
     -
@@ -91,7 +92,7 @@ process:
   field_alternative_title:
     -
       plugin: explode
-      source: alt_title
+      source: alternative_title
       delimiter: '|'
       strict: false
     -
