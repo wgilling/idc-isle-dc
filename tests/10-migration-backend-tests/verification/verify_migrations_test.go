@@ -829,6 +829,9 @@ func Test_VerifyRepositoryItem(t *testing.T) {
 
 	// Extent
 	assert.Equal(t, expectedJson.Extent, attributes.Extent)
+ 
+  // Featured Item
+	assert.Equal(t, expectedJson.FeaturedItem, attributes.FeaturedItem)
 
 	// Finding Aid
 	assert.Equal(t, expectedJson.FindingAid, attributes.FindingAid.Uri)
