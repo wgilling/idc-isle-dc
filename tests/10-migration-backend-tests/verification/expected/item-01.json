@@ -93,7 +93,7 @@
     "1 item",
     "one image file"
   ],
-  "featured_item": 1,
+  "featured_item": true,
   "finding_aid": "http://www.google.com",
   "genre": [
     "Nature",
