@@ -29,7 +29,7 @@ process:
     defaults:
       entity_type: node
       bundle: islandora_object
-      bundle_key: vid
+      bundle_key: type
       value_key: title
   status: constants/STATUS
 destination:
