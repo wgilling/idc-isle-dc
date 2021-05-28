@@ -13,7 +13,7 @@ import os from 'os';
 
 
 fixture `Export Test Migrations`
-  .page`https://islandora-idc-192-168-154-181.traefik.me/migrate_source_ui`
+  .page`https://islandora-idc.traefik.me/migrate_source_ui`
   .beforeEach(async t => {
     await t
       .useRole(adminUser);
@@ -37,7 +37,7 @@ const migrationOptions = selectMigration.find('option');
 
 test('Perform Repository Object Migration', async t => {
   // Migrate dependencies first
-  
+
   // access rights
   await t
     .click(selectMigration)
@@ -174,14 +174,14 @@ test('Perform Repository Object Migration', async t => {
 
 });
 
-// SKIP FOR NOW - not working. 
+// SKIP FOR NOW - not working.
 fixture.skip `Export Tests`
 
 /*
   Element we want to grab:
 
-  <a download="" href="http://islandora-idc-192-168-154-181.traefik.me/system/files/views_data_export/export_metadata_data_export_1/1-1621620562/idc-data-export-repo-items.csv" data-download-enabled="true" id="vde-automatic-download">here</a>
- 
+  <a download="" href="http://islandora-idc.traefik.me/system/files/views_data_export/export_metadata_data_export_1/1-1621620562/idc-data-export-repo-items.csv" data-download-enabled="true" id="vde-automatic-download">here</a>
+
  */
 const fileDownloadSelector = Selector('#vde-automatic-download');
 
@@ -189,7 +189,7 @@ const fileDownloadSelector = Selector('#vde-automatic-download');
 const DOWNLOAD_DIR = joinPath(process.env.HOME || process.env.USERPROFILE, 'downloads/');
 
 test
-    .page`https://islandora-idc-192-168-154-181.traefik.me/export_items?query=zoo`
+    .page`https://islandora-idc.traefik.me/export_items?query=zoo`
     ('Export Tests - Repository Item', async () => {
 
         //console.log("waiting for 60s");
@@ -198,7 +198,7 @@ test
         // Run this test only with the Google Chrome browser to simplify the searching of the downloaded file.
         if (t.browser.name !== 'Chrome')
             return;
-    
+
         var filename = fileDownloadSelector.getAttribute('href');
         console.log("filename is " + filename);
         filename.textContent().replace(/^.*\//g,"");
@@ -225,22 +225,22 @@ test
             }
         }
         rawFile.send(null);
-        // now we have the file, read it in and test it out. 
- */     
+        // now we have the file, read it in and test it out.
+ */
     });
 
 async function readCsvFile(file) {
   var text = null;
   var csvFile = fs.readFileSync(file, { encoding: "utf8" });
   var theData = parser.parse(csvFile, { header: true });
-  
+
   // returns json formatted data
   return theData;
 }
 
 
 //
-// Old attempts below - kept in (for now) in case it's helpful to someone 
+// Old attempts below - kept in (for now) in case it's helpful to someone
 //
 /*
 import http from 'http';
@@ -259,7 +259,7 @@ const runExport = (url) => new Promise((resolve, reject) => {
 });
 
 test('Export Tests - Repository Item Export', async t => {
-    const response = await runExport('https://islandora-idc-192-168-154-181.traefik.me/export_items?query=zoo')
+    const response = await runExport('https://islandora-idc.traefik.me/export_items?query=zoo')
     await t
         .expect(response.statusCode).eql(200);
 
