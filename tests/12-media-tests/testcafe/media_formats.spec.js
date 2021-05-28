@@ -16,7 +16,7 @@ test("Migrate tiff", async (t) => {
     .expect(
       await tryUntilTrue(async () => {
         const media = await findMediaOf(t, "Migrated Tiff Object");
-        return media.length == 3;
+        return media.length == 4;
       })
     )
     .eql(true, "Did not find TIFF derivatives");
@@ -32,7 +32,7 @@ test("Upload tiff in UI", async (t) => {
     .expect(
       await tryUntilTrue(async () => {
         const media = await findMediaOf(t, "Uploaded Tiff Object");
-        return media.length == 3;
+        return media.length == 4;
       })
     )
     .eql(true, "Did not find TIFF derivatives");
@@ -43,7 +43,7 @@ test("Migrate jpeg 2000", async (t) => {
     .expect(
       await tryUntilTrue(async () => {
         const media = await findMediaOf(t, "Migrated JPEG2000 Object");
-        return media.length == 3;
+        return media.length == 4;
       })
     )
     .eql(true, "Did not find JPEG 2000 derivatives");
@@ -59,7 +59,7 @@ test("Upload jpeg 2000 in UI", async (t) => {
     .expect(
       await tryUntilTrue(async () => {
         const media = await findMediaOf(t, "Uploaded JPEG2000 Object");
-        return media.length == 3;
+        return media.length == 4;
       })
     )
     .eql(true, "Did not find TIFF derivatives");
