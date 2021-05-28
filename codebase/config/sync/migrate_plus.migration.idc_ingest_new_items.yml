@@ -603,7 +603,8 @@ destination:
     - field_dspace_identifier/uri
     - field_dspace_item_id
     - field_extent
-    - field_fiending_aid/uri
+    - field_finding_aid/uri
+    - field_featured_item
     - field_genre
     - field_geoportal_link/uri
     - field_issn
