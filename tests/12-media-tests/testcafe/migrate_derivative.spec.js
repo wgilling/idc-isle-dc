@@ -58,7 +58,7 @@ test('Migrate Images for Derivative Generation', async t => {
         const service_count = await service_derivative.count
         const thumb_count = await thumb_derivative.count
         const fits_count = await fits_derivative.count
-        if (service_count < 1 || thumb_count < 1 || fits_count) {
+        if (service_count < 1 || thumb_count < 1 || fits_count < 1) {
             await t.eval(() => location.reload(true));
             return false;
         }
