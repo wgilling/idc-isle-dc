@@ -10,9 +10,7 @@ import os from 'os';
 //const fs   = require('fs');
 //const path = require('path');
 
-
-
-fixture `Export Test Migrations`
+fixture`Export Test Migrations`
   .page`https://islandora-idc.traefik.me/migrate_source_ui`
   .beforeEach(async t => {
     await t
