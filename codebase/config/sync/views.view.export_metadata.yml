@@ -4792,7 +4792,7 @@ display:
           delta_reversed: false
           delta_first_last: false
           multi_type: separator
-          separator: '| '
+          separator: '|'
           field_api_classes: false
           field_rendering: true
           fallback_handler: search_api_entity
@@ -6429,7 +6429,7 @@ display:
           delta_reversed: false
           delta_first_last: false
           multi_type: separator
-          separator: ', '
+          separator: '|'
           field_api_classes: false
           field_rendering: true
           fallback_handler: search_api_entity
@@ -6634,7 +6634,7 @@ display:
             link_to_item: false
             use_highlighting: false
             multi_type: separator
-            multi_separator: '| '
+            multi_separator: '|'
           entity_type: node
           plugin_id: search_api_field
         field_collection_contact_name:
@@ -6776,7 +6776,7 @@ display:
             link_to_item: false
             use_highlighting: false
             multi_type: separator
-            multi_separator: ', '
+            multi_separator: '|'
           entity_type: node
           plugin_id: search_api_field
         field_description:
