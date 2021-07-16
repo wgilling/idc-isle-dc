@@ -694,8 +694,8 @@ func Test_VerifyCollection(t *testing.T) {
 
 	// Resolve and verify member_of values
 	assert.NotNil(t, relData.MemberOf)
-	assert.Equal(t, "node", relData.MemberOf.Data.Type.entity())
-	assert.Equal(t, "collection_object", relData.MemberOf.Data.Type.bundle())
+	assert.Equal(t, "node", relData.MemberOf.Data.Type.Entity())
+	assert.Equal(t, "collection_object", relData.MemberOf.Data.Type.Bundle())
 
 		u = &jsonapi.JsonApiUrl{
 			T:            t,
@@ -1284,8 +1284,8 @@ func Test_VerifyMediaDocument(t *testing.T) {
 	assert.Equal(t, 2, len(expectedJson.AccessTerms))
 	assert.Equal(t, len(expectedJson.AccessTerms), len(document.JsonApiRelationships.AccessTerms.Data))
 	for i := range document.JsonApiRelationships.AccessTerms.Data {
-		use := JsonApiIslandoraAccessTerms{}
-		document.JsonApiRelationships.AccessTerms.Data[i].resolve(t, &use)
+		use := model.JsonApiIslandoraAccessTerms{}
+		document.JsonApiRelationships.AccessTerms.Data[i].Resolve(t, &use)
 		assert.Equal(t, expectedJson.AccessTerms[i], use.JsonApiData[0].JsonApiAttributes.Name)
 	}
 
@@ -1339,8 +1339,8 @@ func Test_VerifyMediaImage(t *testing.T) {
 	assert.Equal(t, 2, len(expectedJson.AccessTerms))
 	assert.Equal(t, len(expectedJson.AccessTerms), len(image.JsonApiRelationships.AccessTerms.Data))
 	for i := range image.JsonApiRelationships.AccessTerms.Data {
-		use := JsonApiIslandoraAccessTerms{}
-		image.JsonApiRelationships.AccessTerms.Data[i].resolve(t, &use)
+		use := model.JsonApiIslandoraAccessTerms{}
+		image.JsonApiRelationships.AccessTerms.Data[i].Resolve(t, &use)
 		assert.Equal(t, expectedJson.AccessTerms[i], use.JsonApiData[0].JsonApiAttributes.Name)
   }
 
@@ -1393,8 +1393,8 @@ func Test_VerifyMediaExtractedText(t *testing.T) {
 	assert.Equal(t, 2, len(expectedJson.AccessTerms))
 	assert.Equal(t, len(expectedJson.AccessTerms), len(ext.JsonApiRelationships.AccessTerms.Data))
 	for i := range ext.JsonApiRelationships.AccessTerms.Data {
-		use := JsonApiIslandoraAccessTerms{}
-		ext.JsonApiRelationships.AccessTerms.Data[i].resolve(t, &use)
+		use := model.JsonApiIslandoraAccessTerms{}
+		ext.JsonApiRelationships.AccessTerms.Data[i].Resolve(t, &use)
 		assert.Equal(t, expectedJson.AccessTerms[i], use.JsonApiData[0].JsonApiAttributes.Name)
 	}
 
@@ -1453,8 +1453,8 @@ func Test_VerifyMediaFile(t *testing.T) {
 	assert.Equal(t, 2, len(expectedJson.AccessTerms))
 	assert.Equal(t, len(expectedJson.AccessTerms), len(genericFile.JsonApiRelationships.AccessTerms.Data))
 	for i := range genericFile.JsonApiRelationships.AccessTerms.Data {
-		use := JsonApiIslandoraAccessTerms{}
-		genericFile.JsonApiRelationships.AccessTerms.Data[i].resolve(t, &use)
+		use := model.JsonApiIslandoraAccessTerms{}
+		genericFile.JsonApiRelationships.AccessTerms.Data[i].Resolve(t, &use)
 		assert.Equal(t, expectedJson.AccessTerms[i], use.JsonApiData[0].JsonApiAttributes.Name)
 	}
 
@@ -1513,8 +1513,8 @@ func Test_VerifyMediaAudio(t *testing.T) {
 	assert.Equal(t, 2, len(expectedJson.AccessTerms))
 	assert.Equal(t, len(expectedJson.AccessTerms), len(audio.JsonApiRelationships.AccessTerms.Data))
 	for i := range audio.JsonApiRelationships.AccessTerms.Data {
-		use := JsonApiIslandoraAccessTerms{}
-		audio.JsonApiRelationships.AccessTerms.Data[i].resolve(t, &use)
+		use := model.JsonApiIslandoraAccessTerms{}
+		audio.JsonApiRelationships.AccessTerms.Data[i].Resolve(t, &use)
 		assert.Equal(t, expectedJson.AccessTerms[i], use.JsonApiData[0].JsonApiAttributes.Name)
 	}
 
@@ -1573,8 +1573,8 @@ func Test_VerifyMediaVideo(t *testing.T) {
 	assert.Equal(t, 2, len(expectedJson.AccessTerms))
 	assert.Equal(t, len(expectedJson.AccessTerms), len(video.JsonApiRelationships.AccessTerms.Data))
 	for i := range video.JsonApiRelationships.AccessTerms.Data {
-		use := JsonApiIslandoraAccessTerms{}
-		video.JsonApiRelationships.AccessTerms.Data[i].resolve(t, &use)
+		use := model.JsonApiIslandoraAccessTerms{}
+		video.JsonApiRelationships.AccessTerms.Data[i].Resolve(t, &use)
 		assert.Equal(t, expectedJson.AccessTerms[i], use.JsonApiData[0].JsonApiAttributes.Name)
 	}
 
