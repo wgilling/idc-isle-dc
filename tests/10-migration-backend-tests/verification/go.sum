@@ -14,6 +14,10 @@ github.com/emetsger/idc-golang v0.0.0-20210715151558-ff64b2b6a827 h1:vIZmnp37mGY
 github.com/emetsger/idc-golang v0.0.0-20210715151558-ff64b2b6a827/go.mod h1:sAj07mQW7YnSzTQnzrqkD1MHgpt2s/tJ3lu8OryPHvc=
 github.com/emetsger/idc-golang v0.0.0-20210715200151-9e70571e59ac h1:K/JmUh5mpNHm/AlYCSc5HP8Vbb9djd4slPJ+wQ9/3Cc=
 github.com/emetsger/idc-golang v0.0.0-20210715200151-9e70571e59ac/go.mod h1:sAj07mQW7YnSzTQnzrqkD1MHgpt2s/tJ3lu8OryPHvc=
+github.com/emetsger/idc-golang v0.0.0-20210716144509-c9488b61102a h1:MfsECLgxAbZwhHNoBB9657jgs2ullPR0LhewfTkmDMo=
+github.com/emetsger/idc-golang v0.0.0-20210716144509-c9488b61102a/go.mod h1:sAj07mQW7YnSzTQnzrqkD1MHgpt2s/tJ3lu8OryPHvc=
+github.com/emetsger/idc-golang v0.0.0-20210716181751-4154e3295f13 h1:MeuCsr1tRiZeX3efDaUBxZjMjygklk1FOxZlz4oX6Zw=
+github.com/emetsger/idc-golang v0.0.0-20210716181751-4154e3295f13/go.mod h1:sAj07mQW7YnSzTQnzrqkD1MHgpt2s/tJ3lu8OryPHvc=
 github.com/godbus/dbus/v5 v5.0.4/go.mod h1:xhWf0FNVPg57R7Z0UbKHbJfkEywrmjJnf7w5xrFpKfA=
 github.com/logrusorgru/aurora/v3 v3.0.0 h1:R6zcoZZbvVcGMvDCKo45A9U/lzYyzl5NfYIvznmDfE4=
 github.com/logrusorgru/aurora/v3 v3.0.0/go.mod h1:vsR12bk5grlLvLXAYrBsb5Oc/N+LxAlxggSjiwMnCUc=
