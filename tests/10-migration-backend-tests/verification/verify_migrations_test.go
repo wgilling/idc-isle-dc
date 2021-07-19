@@ -70,7 +70,7 @@ func Test_VerifyTaxonomyTermPerson_Person2(t *testing.T) {
 }
 
 func verifyTaxonomyTermPerson(t *testing.T, fileName string, restOfName string) {
-	expectedJson := ExpectedPerson{}
+	expectedJson := model.ExpectedPerson{}
 	log.Printf("Test Person file: %s and %s", fileName, restOfName)
 	unmarshalExpectedJson(t, fileName, &expectedJson)
 
@@ -136,7 +136,7 @@ func verifyTaxonomyTermPerson(t *testing.T, fileName string, restOfName string) 
 // a name field. This test ensures that these long names can be entered via ingest.
 func Test_VerifyTaxonomyTermLongNamePerson(t *testing.T) {
 
-	expectedJson := ExpectedPerson{}
+	expectedJson := model.ExpectedPerson{}
 	unmarshalExpectedJson(t, "taxonomy-person-03.json", &expectedJson)
 
 	// sanity check the expected json
@@ -172,7 +172,7 @@ func Test_VerifyTaxonomyTermLongNamePerson(t *testing.T) {
 }
 
 func Test_VerifyTaxonomyTermAccessRights(t *testing.T) {
-	expectedJson := ExpectedAccessRights{}
+	expectedJson := model.ExpectedAccessRights{}
 	unmarshalExpectedJson(t, "taxonomy-accessrights.json", &expectedJson)
 
 	// sanity check the expected json
@@ -222,7 +222,7 @@ func Test_VerifyTaxonomyTermIslandoraAccessTerms_Term2(t *testing.T) {
 }
 
 func verifyTaxonomyTermIslandoraAccessTerms(t *testing.T, fileName string) {
-	expectedJson := ExpectedIslandoraAccessTerms{}
+	expectedJson := model.ExpectedIslandoraAccessTerms{}
 
 	unmarshalExpectedJson(t, fileName, &expectedJson)
 
@@ -270,7 +270,7 @@ func verifyTaxonomyTermIslandoraAccessTerms(t *testing.T, fileName string) {
 }
 
 func Test_VerifyTaxonomyCopyrightAndUse(t *testing.T) {
-	expectedJson := ExpectedCopyrightAndUse{}
+	expectedJson := model.ExpectedCopyrightAndUse{}
 	unmarshalExpectedJson(t, "taxonomy-copyrightanduse.json", &expectedJson)
 
 	// sanity check the expected json
@@ -306,7 +306,7 @@ func Test_VerifyTaxonomyCopyrightAndUse(t *testing.T) {
 }
 
 func Test_VerifyTaxonomyTermResourceType(t *testing.T) {
-	expectedJson := ExpectedResourceType{}
+	expectedJson := model.ExpectedResourceType{}
 	unmarshalExpectedJson(t, "taxonomy-resourcetypes.json", &expectedJson)
 
 	// sanity check the expected json
@@ -342,7 +342,7 @@ func Test_VerifyTaxonomyTermResourceType(t *testing.T) {
 }
 
 func Test_VerifyTaxonomyTermFamily(t *testing.T) {
-	expectedJson := ExpectedFamily{}
+	expectedJson := model.ExpectedFamily{}
 	unmarshalExpectedJson(t, "taxonomy-family-01.json", &expectedJson)
 
 	// sanity check the expected json
@@ -407,7 +407,7 @@ func Test_VerifyTaxonomyTermFamily(t *testing.T) {
 }
 
 func Test_VerifyTaxonomyTermGenre(t *testing.T) {
-	expectedJson := ExpectedGenre{}
+	expectedJson := model.ExpectedGenre{}
 	unmarshalExpectedJson(t, "taxonomy-genre.json", &expectedJson)
 
 	// sanity check the expected json
@@ -443,7 +443,7 @@ func Test_VerifyTaxonomyTermGenre(t *testing.T) {
 }
 
 func Test_VerifyTaxonomyTermGeolocation(t *testing.T) {
-	expectedJson := ExpectedGeolocation{}
+	expectedJson := model.ExpectedGeolocation{}
 	unmarshalExpectedJson(t, "taxonomy-geolocation.json", &expectedJson)
 
 	// sanity check the expected json
@@ -487,7 +487,7 @@ func Test_VerifyTaxonomyTermGeolocation(t *testing.T) {
 }
 
 func Test_VerifyTaxonomySubject(t *testing.T) {
-	expectedJson := ExpectedSubject{}
+	expectedJson := model.ExpectedSubject{}
 	unmarshalExpectedJson(t, "taxonomy-subject.json", &expectedJson)
 
 	// sanity check the expected json
@@ -523,7 +523,7 @@ func Test_VerifyTaxonomySubject(t *testing.T) {
 }
 
 func Test_VerifyTaxonomyTermLanguage(t *testing.T) {
-	expectedJson := ExpectedLanguage{}
+	expectedJson := model.ExpectedLanguage{}
 	unmarshalExpectedJson(t, "taxonomy-language.json", &expectedJson)
 
 	// sanity check the expected json
@@ -560,7 +560,7 @@ func Test_VerifyTaxonomyTermLanguage(t *testing.T) {
 }
 
 func Test_VerifyTaxonomyTermCorporateBody(t *testing.T) {
-	expectedJson := ExpectedCorporateBody{}
+	expectedJson := model.ExpectedCorporateBody{}
 	unmarshalExpectedJson(t, "taxonomy-corporatebody-02.json", &expectedJson)
 
 	// sanity check the expected json
@@ -628,7 +628,7 @@ func Test_VerifyTaxonomyTermCorporateBody(t *testing.T) {
 }
 
 func Test_VerifyCollection(t *testing.T) {
-	expectedJson := ExpectedCollection{}
+	expectedJson := model.ExpectedCollection{}
 	unmarshalExpectedJson(t, "collection-01.json", &expectedJson)
 
 	// sanity check the expected json
@@ -697,16 +697,16 @@ func Test_VerifyCollection(t *testing.T) {
 	assert.Equal(t, "node", relData.MemberOf.Data.Type.Entity())
 	assert.Equal(t, "collection_object", relData.MemberOf.Data.Type.Bundle())
 
-		u = &jsonapi.JsonApiUrl{
-			T:            t,
-			BaseUrl:      DrupalBaseurl,
-			DrupalEntity: relData.MemberOf.Data.Type.Entity(),
-			DrupalBundle: relData.MemberOf.Data.Type.Bundle(),
-			Filter:       "id",
-			Value:        relData.MemberOf.Data.Id,
-		}
-		memberCol := model.JsonApiCollection{}
-		u.GetSingle(&memberCol)
+	u = &jsonapi.JsonApiUrl{
+		T:            t,
+		BaseUrl:      DrupalBaseurl,
+		DrupalEntity: relData.MemberOf.Data.Type.Entity(),
+		DrupalBundle: relData.MemberOf.Data.Type.Bundle(),
+		Filter:       "id",
+		Value:        relData.MemberOf.Data.Id,
+	}
+	memberCol := model.JsonApiCollection{}
+	u.GetSingle(&memberCol)
 
 	assert.Equal(t, expectedJson.MemberOf, memberCol.JsonApiData[0].JsonApiAttributes.Title)
 
@@ -736,7 +736,7 @@ func Test_VerifyCollection(t *testing.T) {
 // Node title lengths are now configurable in settings.local.php, currently set at 500 for a node
 // This test ensures that these long node titles can be entered via ingest.
 func Test_VerifyLongNodeTitle(t *testing.T) {
-	expectedJson := ExpectedCollection{}
+	expectedJson := model.ExpectedCollection{}
 	unmarshalExpectedJson(t, "collection-03.json", &expectedJson)
 
 	// sanity check the expected json
@@ -765,7 +765,7 @@ func Test_VerifyLongNodeTitle(t *testing.T) {
 }
 
 func Test_VerifyRepositoryItem(t *testing.T) {
-	expectedJson := ExpectedRepoObj{}
+	expectedJson := model.ExpectedRepoObj{}
 	unmarshalExpectedJson(t, "item-01.json", &expectedJson)
 
 	// sanity check the expected json
@@ -1248,7 +1248,7 @@ func Test_VerifyDuplicateMediaAndFile(t *testing.T) {
 }
 
 func Test_VerifyMediaDocument(t *testing.T) {
-	expectedJson := &ExpectedMediaGeneric{}
+	expectedJson := &model.ExpectedMediaGeneric{}
 	unmarshalExpectedJson(t, "media-document.json", &expectedJson)
 
 	// sanity check the expected json
@@ -1303,7 +1303,7 @@ func Test_VerifyMediaDocument(t *testing.T) {
 }
 
 func Test_VerifyMediaImage(t *testing.T) {
-	expectedJson := &ExpectedMediaImage{}
+	expectedJson := &model.ExpectedMediaImage{}
 	unmarshalExpectedJson(t, "media-image.json", &expectedJson)
 
 	// sanity check the expected json
@@ -1342,7 +1342,7 @@ func Test_VerifyMediaImage(t *testing.T) {
 		use := model.JsonApiIslandoraAccessTerms{}
 		image.JsonApiRelationships.AccessTerms.Data[i].Resolve(t, &use)
 		assert.Equal(t, expectedJson.AccessTerms[i], use.JsonApiData[0].JsonApiAttributes.Name)
-  }
+	}
 
 	assert.Equal(t, expectedJson.AltText, image.JsonApiRelationships.File.Data.Meta["alt"])
 
@@ -1360,7 +1360,7 @@ func Test_VerifyMediaImage(t *testing.T) {
 }
 
 func Test_VerifyMediaExtractedText(t *testing.T) {
-	expectedJson := &ExpectedMediaExtractedText{}
+	expectedJson := &model.ExpectedMediaExtractedText{}
 	expectedType := "media"
 	expectedBundle := "extracted_text"
 	unmarshalExpectedJson(t, "media-extracted_text.json", &expectedJson)
@@ -1419,7 +1419,7 @@ func Test_VerifyMediaExtractedText(t *testing.T) {
 }
 
 func Test_VerifyMediaFile(t *testing.T) {
-	expectedJson := &ExpectedMediaGeneric{}
+	expectedJson := &model.ExpectedMediaGeneric{}
 	expectedType := "media"
 	expectedBundle := "file"
 	unmarshalExpectedJson(t, "media-file.json", &expectedJson)
@@ -1479,7 +1479,7 @@ func Test_VerifyMediaFile(t *testing.T) {
 }
 
 func Test_VerifyMediaAudio(t *testing.T) {
-	expectedJson := &ExpectedMediaGeneric{}
+	expectedJson := &model.ExpectedMediaGeneric{}
 	expectedType := "media"
 	expectedBundle := "audio"
 	unmarshalExpectedJson(t, "media-audio.json", &expectedJson)
@@ -1539,7 +1539,7 @@ func Test_VerifyMediaAudio(t *testing.T) {
 }
 
 func Test_VerifyMediaVideo(t *testing.T) {
-	expectedJson := &ExpectedMediaGeneric{}
+	expectedJson := &model.ExpectedMediaGeneric{}
 	expectedType := "media"
 	expectedBundle := "video"
 	unmarshalExpectedJson(t, "media-video.json", &expectedJson)
@@ -1599,7 +1599,7 @@ func Test_VerifyMediaVideo(t *testing.T) {
 }
 
 func Test_VerifyMediaRemoteVideo(t *testing.T) {
-	expectedJson := &ExpectedMediaRemoteVideo{}
+	expectedJson := &model.ExpectedMediaRemoteVideo{}
 	expectedType := "media"
 	expectedBundle := "remote_video"
 	unmarshalExpectedJson(t, "media-remote_video.json", &expectedJson)
