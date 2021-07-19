@@ -1053,25 +1053,25 @@ func Test_VerifyRepositoryItem(t *testing.T) {
 //    (here it's tucked into a subject's name)
 // 2) that a `;` in a language value pair behaves fine (in fields like asbtract, description, etc).
 func Test_VerifyRepositoryItemWithDelimitersInData(t *testing.T) {
-	expectedJson := ExpectedRepoObj{}
-	unmarshalJson(t, "item-02.json", &expectedJson)
+	expectedJson := model.ExpectedRepoObj{}
+	unmarshalExpectedJson(t, "item-02.json", &expectedJson)
 
 	// sanity check the expected json
 	assert.Equal(t, "node", expectedJson.Type)
 	assert.Equal(t, "islandora_object", expectedJson.Bundle)
 
-	u := &JsonApiUrl{
-		t:            t,
-		baseUrl:      DrupalBaseurl,
-		drupalEntity: expectedJson.Type,
-		drupalBundle: expectedJson.Bundle,
-		filter:       "title",
-		value:        expectedJson.Title,
+	u := &jsonapi.JsonApiUrl{
+		T:            t,
+		BaseUrl:      DrupalBaseurl,
+		DrupalEntity: expectedJson.Type,
+		DrupalBundle: expectedJson.Bundle,
+		Filter:       "title",
+		Value:        expectedJson.Title,
 	}
 
 	// retrieve json of the migrated entity from the jsonapi and unmarshal the single response
-	res := &JsonApiIslandoraObj{}
-	u.getSingle(res)
+	res := &model.JsonApiIslandoraObj{}
+	u.GetSingle(res)
 	actual := res.JsonApiData[0]
 	sourceId := actual.Id
 	assert.NotEmpty(t, sourceId)
@@ -1093,16 +1093,16 @@ func Test_VerifyRepositoryItemWithDelimitersInData(t *testing.T) {
 	assert.Equal(t, 2, len(expectedJson.Abstract))
 	assert.Equal(t, len(expectedJson.Abstract), len(relData.Abstract.Data))
 	for i := range relData.Abstract.Data {
-		assert.Equal(t, expectedJson.Abstract[i].Value, relData.Abstract.Data[i].value())
-		assert.Equal(t, expectedJson.Abstract[i].LangCode, relData.Abstract.Data[i].langCode(t))
+		assert.Equal(t, expectedJson.Abstract[i].Value, relData.Abstract.Data[i].Value())
+		assert.Equal(t, expectedJson.Abstract[i].LangCode, relData.Abstract.Data[i].LangCode(t))
 	}
 
 	// Alt title
 	assert.Equal(t, 2, len(expectedJson.AltTitle))
 	assert.Equal(t, len(expectedJson.AltTitle), len(relData.AltTitle.Data))
 	for i := range relData.AltTitle.Data {
-		assert.Equal(t, expectedJson.AltTitle[i].Value, relData.AltTitle.Data[i].value())
-		assert.Equal(t, expectedJson.AltTitle[i].LangCode, relData.AltTitle.Data[i].langCode(t))
+		assert.Equal(t, expectedJson.AltTitle[i].Value, relData.AltTitle.Data[i].Value())
+		assert.Equal(t, expectedJson.AltTitle[i].LangCode, relData.AltTitle.Data[i].LangCode(t))
 	}
 
 	// Contributor
@@ -1110,9 +1110,9 @@ func Test_VerifyRepositoryItemWithDelimitersInData(t *testing.T) {
 	assert.Equal(t, 2, len(expectedJson.Contributor))
 	assert.Equal(t, len(expectedJson.Contributor), len(relData.Contributor.Data))
 	for i := range relData.Contributor.Data {
-		actualPerson := &JsonApiPerson{}
-		relData.Contributor.Data[i].resolve(t, actualPerson)
-		actualRelType, err := relData.Contributor.Data[i].metaString("rel_type")
+		actualPerson := &model.JsonApiPerson{}
+		relData.Contributor.Data[i].Resolve(t, actualPerson)
+		actualRelType, err := relData.Contributor.Data[i].MetaString("rel_type")
 		assert.Nil(t, err)
 		assert.Equal(t, expectedJson.Contributor[i].RelType, actualRelType)
 		assert.Equal(t, expectedJson.Contributor[i].Name, actualPerson.JsonApiData[0].JsonApiAttributes.Name)
@@ -1123,9 +1123,9 @@ func Test_VerifyRepositoryItemWithDelimitersInData(t *testing.T) {
 	assert.Equal(t, 2, len(expectedJson.Creator))
 	assert.Equal(t, len(expectedJson.Creator), len(relData.Creator.Data))
 	for i := range relData.Creator.Data {
-		actualPerson := &JsonApiPerson{}
-		relData.Creator.Data[i].resolve(t, actualPerson)
-		actualRelType, err := relData.Creator.Data[i].metaString("rel_type")
+		actualPerson := &model.JsonApiPerson{}
+		relData.Creator.Data[i].Resolve(t, actualPerson)
+		actualRelType, err := relData.Creator.Data[i].MetaString("rel_type")
 		assert.Nil(t, err)
 		assert.Equal(t, expectedJson.Creator[i].Name, actualPerson.JsonApiData[0].JsonApiAttributes.Name)
 		assert.Equal(t, expectedJson.Creator[i].RelType, actualRelType)
@@ -1135,24 +1135,24 @@ func Test_VerifyRepositoryItemWithDelimitersInData(t *testing.T) {
 	assert.Equal(t, 2, len(expectedJson.CustodialHistory))
 	assert.Equal(t, len(expectedJson.CustodialHistory), len(relData.CustodialHistory.Data))
 	for i := range relData.CustodialHistory.Data {
-		assert.Equal(t, expectedJson.CustodialHistory[i].Value, relData.CustodialHistory.Data[i].value())
-		assert.Equal(t, expectedJson.CustodialHistory[i].LangCode, relData.CustodialHistory.Data[i].langCode(t))
+		assert.Equal(t, expectedJson.CustodialHistory[i].Value, relData.CustodialHistory.Data[i].Value())
+		assert.Equal(t, expectedJson.CustodialHistory[i].LangCode, relData.CustodialHistory.Data[i].LangCode(t))
 	}
 
 	// Description
 	assert.Equal(t, 2, len(expectedJson.Description))
 	assert.Equal(t, len(expectedJson.Description), len(relData.Description.Data))
 	for i := range relData.Description.Data {
-		assert.Equal(t, expectedJson.Description[i].Value, relData.Description.Data[i].value())
-		assert.Equal(t, expectedJson.Description[i].LangCode, relData.Description.Data[i].langCode(t))
+		assert.Equal(t, expectedJson.Description[i].Value, relData.Description.Data[i].Value())
+		assert.Equal(t, expectedJson.Description[i].LangCode, relData.Description.Data[i].LangCode(t))
 	}
 
 	// Subject
 	assert.Equal(t, 2, len(expectedJson.Subject))
 	assert.Equal(t, len(expectedJson.Subject), len(relData.Subject.Data))
 	for i := range relData.Subject.Data {
-		subj := &JsonApiSubject{}
-		relData.Subject.Data[i].resolve(t, subj)
+		subj := &model.JsonApiSubject{}
+		relData.Subject.Data[i].Resolve(t, subj)
 		assert.Contains(t, expectedJson.Subject, subj.JsonApiData[0].JsonApiAttributes.Name)
 	}
 
@@ -1160,8 +1160,8 @@ func Test_VerifyRepositoryItemWithDelimitersInData(t *testing.T) {
 	assert.Equal(t, 2, len(expectedJson.TableOfContents))
 	assert.Equal(t, len(expectedJson.TableOfContents), len(relData.TableOfContents.Data))
 	for i := range relData.TableOfContents.Data {
-		assert.Equal(t, expectedJson.TableOfContents[i].LangCode, relData.TableOfContents.Data[i].langCode(t))
-		assert.Equal(t, expectedJson.TableOfContents[i].Value, relData.TableOfContents.Data[i].value())
+		assert.Equal(t, expectedJson.TableOfContents[i].LangCode, relData.TableOfContents.Data[i].LangCode(t))
+		assert.Equal(t, expectedJson.TableOfContents[i].Value, relData.TableOfContents.Data[i].Value())
 	}
 }
 
