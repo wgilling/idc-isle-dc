@@ -4,10 +4,10 @@ import (
 	"crypto/sha1"
 	"encoding/json"
 	"fmt"
-	"github.com/emetsger/idc-golang/drupal/env"
-	"github.com/emetsger/idc-golang/drupal/fs"
-	"github.com/emetsger/idc-golang/drupal/jsonapi"
-	"github.com/emetsger/idc-golang/drupal/model"
+	"github.com/jhu-idc/idc-golang/drupal/env"
+	"github.com/jhu-idc/idc-golang/drupal/fs"
+	"github.com/jhu-idc/idc-golang/drupal/jsonapi"
+	"github.com/jhu-idc/idc-golang/drupal/model"
 	. "github.com/logrusorgru/aurora/v3"
 	"github.com/stretchr/testify/assert"
 	"io"
@@ -696,7 +696,8 @@ func Test_VerifyCollection(t *testing.T) {
 	assert.NotNil(t, relData.MemberOf)
 	assert.Equal(t, "node", relData.MemberOf.Data.Type.Entity())
 	assert.Equal(t, "collection_object", relData.MemberOf.Data.Type.Bundle())
-
+	memberCol := model.JsonApiCollection{}
+	relData.MemberOf.Data.Resolve(t, &memberCol)
 	u = &jsonapi.JsonApiUrl{
 		T:            t,
 		BaseUrl:      DrupalBaseurl,
@@ -705,7 +706,6 @@ func Test_VerifyCollection(t *testing.T) {
 		Filter:       "id",
 		Value:        relData.MemberOf.Data.Id,
 	}
-	memberCol := model.JsonApiCollection{}
 	u.GetSingle(&memberCol)
 
 	assert.Equal(t, expectedJson.MemberOf, memberCol.JsonApiData[0].JsonApiAttributes.Title)
