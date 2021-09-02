@@ -4,7 +4,7 @@ import { t } from 'testcafe';
 import fs from 'fs';
 import { join as joinPath } from 'path';
 import os from 'os';
-import {findNodeIdForTitle, getResponseData, doMigration} from "./util";
+import {contentList, findNodeIdForTitle, getResponseData, doMigration} from "./util";
 
 
 //const fs   = require('fs');
@@ -77,8 +77,8 @@ test('Perform Repository Object Migration', async t => {
 // This also tests the report log for iconv errors, because if we
 // see them than there might be an issue with php and iconv
 test('Get Citations for Item', async t => {
-  const nid = await findNodeIdForTitle(t, "Zoo Animal B");
-  const citationUrl = "https://islandora-idc.traefik.me/citation?nid=".concat(nid);
+  const nid = await findNodeIdForTitle(t, 'Zoo Animal B');
+  const citationUrl = 'https://islandora-idc.traefik.me/citation?nid='.concat(nid);
   const response = await getResponseData(citationUrl);
   await t.expect(response.statusCode).eql(200);
 
@@ -86,11 +86,11 @@ test('Get Citations for Item', async t => {
 
   // the data in the response should look like this:
   const expected = {
-    "nid": "40",
-    "field_citable_url": "https://islandora-idc.traefik.me/node/40",
-    "citation_apa": "<div class=\"csl-bib-body\">\n  <div class=\"csl-entry\">Weston, E. , 2 Preferred Name Suffix, &#38; Adams, A. E. , 1 Preferred Name Suffix. (2020). <i>Zoo Animal B</i>. Knoxville Zoo. https://islandora-idc.traefik.me/node/40</div>\n</div>",
-    "citation_chicago": "<div class=\"csl-bib-body\">\n  <div class=\"csl-entry\">Edward Weston 2 Preferred Name Suffix, and Ansel Easton Adams 1 Preferred Name Suffix. 2020. <i>Zoo Animal B</i>. 1. Knoxville Zoo. https://islandora-idc.traefik.me/node/40.</div>\n</div>",
-    "citation_mla": "<div class=\"csl-bib-body\">\n  <div class=\"csl-entry\">E. Weston 2 Preferred Name Suffix, and A. E. Adams 1 Preferred Name Suffix. <i>Zoo Animal B</i>. Knoxville Zoo, 1 Jan. 2020, https://islandora-idc.traefik.me/node/40.</div>\n</div>"
+    'nid': nid,
+    'field_citable_url': 'https://islandora-idc.traefik.me/node/' + nid,
+    'citation_apa': '<div class=\"csl-bib-body\">\n  <div class=\"csl-entry\">Weston, E. , 2 Preferred Name Suffix, &#38; Adams, A. E. , 1 Preferred Name Suffix. (2020). <i>Zoo Animal B</i>. Knoxville Zoo. https://islandora-idc.traefik.me/node/' + nid + '</div>\n</div>',
+    'citation_chicago': '<div class=\"csl-bib-body\">\n  <div class=\"csl-entry\">Edward Weston 2 Preferred Name Suffix, and Ansel Easton Adams 1 Preferred Name Suffix. 2020. <i>Zoo Animal B</i>. 1. Knoxville Zoo. https://islandora-idc.traefik.me/node/' + nid + '.</div>\n</div>',
+    'citation_mla': '<div class=\"csl-bib-body\">\n  <div class=\"csl-entry\">E. Weston 2 Preferred Name Suffix, and A. E. Adams 1 Preferred Name Suffix. <i>Zoo Animal B</i>. Knoxville Zoo, 1 Jan. 2020, https://islandora-idc.traefik.me/node/' + nid + '.</div>\n</div>'
   };
 
   await t.expect(data.nid).eql(expected.nid);
@@ -100,9 +100,49 @@ test('Get Citations for Item', async t => {
   await t.expect(data.citation_mla).eql(expected.citation_mla);
 
   // now ensure that there are no recent errors about iconv conversions in the log
-  await t.navigateTo("https://islandora-idc.traefik.me/admin/reports/dblog");
-  const item = Selector("div.view-content").find("a").withText("Notice: iconv(): Wrong charset");
+  await t.navigateTo('https://islandora-idc.traefik.me/admin/reports/dblog');
+  const item = Selector('div.view-content').find('a').withText('Notice: iconv(): Wrong charset');
   await t.expect(item.count).eql(0);
+});
+
+// make sure citations are not being cached by changing a repository item
+// and getting the citation right away
+test('Test Citations for Caching', async t => {
+  await t.navigateTo(contentList);
+
+  const item = Selector('div.view-content').find('a').withText('Zoo Animal B');
+  await t.expect(item.count).eql(1);
+  await t.click(item);
+
+  // click on edit tab
+  await t.click(Selector('#block-idcui-local-tasks').find('a').withText('Edit'));
+  await t
+    .typeText('#edit-title-0-value', 'Zoo Animal B - New Title', { replace: true })
+    .click('#edit-submit');
+
+  //const nodeUrl = await getUrl();
+  const nodeUrl = await t.eval(() => document.documentURI);
+  const nid = nodeUrl.substring(nodeUrl.lastIndexOf('/') + 1);
+  const citationUrl = 'https://islandora-idc.traefik.me/citation?nid='.concat(nid);
+  const response = await getResponseData(citationUrl);
+  await t.expect(response.statusCode).eql(200);
+
+  const data = JSON.parse(response.rawData)[0];
+
+  // the data in the response should look like this:
+  const expected = {
+    'nid': nid,
+    'field_citable_url': 'https://islandora-idc.traefik.me/node/' + nid,
+    'citation_apa': '<div class=\"csl-bib-body\">\n  <div class=\"csl-entry\">Weston, E. , 2 Preferred Name Suffix, &#38; Adams, A. E. , 1 Preferred Name Suffix. (2020). <i>Zoo Animal B - New Title</i>. Knoxville Zoo. https://islandora-idc.traefik.me/node/' + nid + '</div>\n</div>',
+    'citation_chicago': '<div class=\"csl-bib-body\">\n  <div class=\"csl-entry\">Edward Weston 2 Preferred Name Suffix, and Ansel Easton Adams 1 Preferred Name Suffix. 2020. <i>Zoo Animal B - New Title</i>. 1. Knoxville Zoo. https://islandora-idc.traefik.me/node/' + nid + '.</div>\n</div>',
+    'citation_mla': '<div class=\"csl-bib-body\">\n  <div class=\"csl-entry\">E. Weston 2 Preferred Name Suffix, and A. E. Adams 1 Preferred Name Suffix. <i>Zoo Animal B - New Title</i>. Knoxville Zoo, 1 Jan. 2020, https://islandora-idc.traefik.me/node/' + nid + '.</div>\n</div>'
+  };
+
+  await t.expect(data.nid).eql(expected.nid);
+  await t.expect(data.field_citable_url).eql(expected.field_citable_url);
+  await t.expect(data.citation_apa).eql(expected.citation_apa);
+  await t.expect(data.citation_chicago).eql(expected.citation_chicago);
+  await t.expect(data.citation_mla).eql(expected.citation_mla);
 });
 
 

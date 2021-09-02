@@ -7889,12 +7889,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jhu-idc/islandora_defaults.git",
-                "reference": "fb1aac2963687dab260440110b1192427ba4ba92"
+                "reference": "efe2668dbf1e7454d8d68ce5fb3079048973028f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jhu-idc/islandora_defaults/zipball/fb1aac2963687dab260440110b1192427ba4ba92",
-                "reference": "fb1aac2963687dab260440110b1192427ba4ba92",
+                "url": "https://api.github.com/repos/jhu-idc/islandora_defaults/zipball/efe2668dbf1e7454d8d68ce5fb3079048973028f",
+                "reference": "efe2668dbf1e7454d8d68ce5fb3079048973028f",
                 "shasum": ""
             },
             "require": {
@@ -7906,6 +7906,7 @@
                 "jhu-idc/controlled_access_terms": "dev-8.x-1.x",
                 "jhu-idc/reference_value_pair": "dev-main"
             },
+            "default-branch": true,
             "type": "drupal-module",
             "license": [
                 "GPL-2.0+"
@@ -7920,7 +7921,7 @@
                 "issues": "https://github.com/jhu-idc/islandora_defaults/issues",
                 "source": "https://github.com/jhu-idc/islandora_defaults/tree/8.x-1.x"
             },
-            "time": "2021-08-27T15:56:18+00:00"
+            "time": "2021-09-01T14:54:11+00:00"
         },
         {
             "name": "jhu-idc/migrate_file",

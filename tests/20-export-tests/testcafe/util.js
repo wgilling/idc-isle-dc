@@ -4,7 +4,7 @@ import path from "path";
 import url from "url";
 import https from "https";
 
-const contentList = "https://islandora-idc.traefik.me/admin/content";
+export const contentList = "https://islandora-idc.traefik.me/admin/content";
 
 /** Find media for a repository object with the given name
  *
