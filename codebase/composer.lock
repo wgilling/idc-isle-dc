@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "32ac54c62a6ba7b6bbf3ddd3fa682b7b",
+    "content-hash": "5146a8ded20966b6ef133d39f9b7ab27",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -7829,16 +7829,16 @@
         },
         {
             "name": "jhu-idc/idc_export",
-            "version": "dev-citations_work",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jhu-idc/idc_export.git",
-                "reference": "e662945f97a0fd11c1b2ec3a1e46fb1b3625d3ad"
+                "reference": "49661366440656929e20e46f6448bbd68779f510"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jhu-idc/idc_export/zipball/e662945f97a0fd11c1b2ec3a1e46fb1b3625d3ad",
-                "reference": "e662945f97a0fd11c1b2ec3a1e46fb1b3625d3ad",
+                "url": "https://api.github.com/repos/jhu-idc/idc_export/zipball/49661366440656929e20e46f6448bbd68779f510",
+                "reference": "49661366440656929e20e46f6448bbd68779f510",
                 "shasum": ""
             },
             "require": {
@@ -7853,13 +7853,14 @@
                 "drupal/search_api": "~1.12",
                 "drupal/xls_serialization": "~1.0"
             },
+            "default-branch": true,
             "type": "drupal-module",
             "description": "Metadata and Citation Export Module for JHU Islandora",
             "support": {
-                "source": "https://github.com/jhu-idc/idc_export/tree/citations_work",
+                "source": "https://github.com/jhu-idc/idc_export/tree/main",
                 "issues": "https://github.com/jhu-idc/idc_export/issues"
             },
-            "time": "2021-08-31T20:31:09+00:00"
+            "time": "2021-09-02T14:33:17+00:00"
         },
         {
             "name": "jhu-idc/idc_ui_module",
