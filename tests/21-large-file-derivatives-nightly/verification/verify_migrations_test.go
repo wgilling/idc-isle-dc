@@ -34,7 +34,7 @@ const (
 	expectedOriginalDocumentsMediaCount = 1
 	expectedOriginalVideoCount          = 2
 	expectedOriginalImageCount          = 5
-	expectedDerivativeThumbCount        = expectedRepoObjectCount - expectedOriginalDocumentsMediaCount // the PDF doesn't have a thumbnail
+	expectedDerivativeThumbCount        = expectedRepoObjectCount
 	expectedDerivativeFitsCount         = expectedRepoObjectCount - 1                                   // TODO: the first image doesn't have a FITS file
 	expectedDerivativeExtractedTxtCount = expectedOriginalDocumentsMediaCount                           // Only the PDF has extracted text
 	expectedDerivativeServiceCount      = expectedRepoObjectCount - expectedOriginalDocumentsMediaCount // The PDF doesn't have a service file; TODO: Missing service files for the large and small video
