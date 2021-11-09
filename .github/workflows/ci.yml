@@ -98,6 +98,9 @@ jobs:
                 docker logs idc_drupal_1 2>&1 | tee end-to-end/reports/${{ matrix.suite }}/drupal-${{ matrix.suite }}.log
                 docker logs idc_alpaca_1 2>&1 | tee end-to-end/reports/${{ matrix.suite }}/alpaca-${{ matrix.suite }}.log
                 docker logs idc_homarus_1 2>&1 | tee end-to-end/reports/${{ matrix.suite }}/homarus-${{ matrix.suite }}.log
+                docker logs idc_crayfits_1 2>&1 | tee end-to-end/reports/${{ matrix.suite }}/crayfits-${{ matrix.suite }}.log
+                docker logs idc_fits_1 2>&1 | tee end-to-end/reports/${{ matrix.suite }}/fits-${{ matrix.suite }}.log
+                docker logs idc_houdini_1 2>&1 | tee end-to-end/reports/${{ matrix.suite }}/houdini-${{ matrix.suite }}.log
             - name: upload reports
               if: failure()
               uses: actions/upload-artifact@v2
