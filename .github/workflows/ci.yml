@@ -102,13 +102,13 @@ jobs:
                 docker logs idc_fits_1 2>&1 | tee end-to-end/reports/${{ matrix.suite }}/fits-${{ matrix.suite }}.log
                 docker logs idc_houdini_1 2>&1 | tee end-to-end/reports/${{ matrix.suite }}/houdini-${{ matrix.suite }}.log
             - name: upload reports
-              if: failure()
+              if: always()
               uses: actions/upload-artifact@v2
               with:
                 name: reports-${{ matrix.suite }}
                 path: end-to-end/reports/${{ matrix.suite }}
             - name: upload screenshots
-              if: failure()
+              if: always()
               uses: actions/upload-artifact@v2
               with:
                 name: reports-screenshots
