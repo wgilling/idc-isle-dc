@@ -91,7 +91,7 @@ jobs:
                 chmod a+rwx end-to-end/reports
                 make test test=${{ matrix.suite }}
             - name: reports
-              if: failure()
+              if: always()
               run: |
                 mkdir -p end-to-end/reports/${{ matrix.suite }}
                 docker ps
