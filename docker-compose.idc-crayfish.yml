@@ -9,6 +9,9 @@ services:
       PHP_MAX_EXECUTION_TIME: ${PHP_MAX_EXECUTION_TIME:-60}
   houdini:
     image: ${REPOSITORY:-islandora}/houdini:${TAG:-latest}
+    command: -queue ${HOUDINI_QUEUE_NAME} -host activemq -pass ${ACTIVEMQ_PASSWORD} -config ${HOUDINI_HANDLER_CONFIG_LOCATION}
+    depends_on:
+      - activemq
   hypercube:
     image: ${REPOSITORY:-islandora}/hypercube:${TAG:-latest}
   dlq:
