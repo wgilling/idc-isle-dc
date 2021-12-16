@@ -19,6 +19,9 @@ $databases['default']['default']['prefix'] = '';
 $databases['default']['default']['driver'] = getenv('DRUPAL_DEFAULT_DB_DRIVER') ?: 'mysql';
 $databases['default']['default']['namespace']  = 'Drupal\\Core\\Database\\Driver\\';
 $databases['default']['default']['namespace'] .= $databases['default']['default']['driver'];
+$databases['default']['default']['init_commands'] = array(
+  'isolation' => "SET SESSION tx_isolation='READ-COMMITTED'"
+);
 
 $settings['s3fs.access_key'] = getenv('DRUPAL_DEFAULT_S3_ACCESS_KEY');
 $settings['s3fs.secret_key'] = getenv('DRUPAL_DEFAULT_S3_SECRET_KEY');
