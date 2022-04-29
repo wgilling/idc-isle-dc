@@ -584,7 +584,7 @@ This project has been sponsored by:
 - Tulane University
 - LYRASIS
 - Born-Digital
-
+.
 ## License
 
 [MIT](https://opensource.org/licenses/MIT)
