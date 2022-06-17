@@ -349,3 +349,20 @@ clean:
 	-docker-compose down -v
 	sudo rm -fr codebase certs
 	git clean -xffd .
+
+.PHONY: down
+down:
+        docker-compose down --remove-orphans
+        -docker ps -q --filter "name=gulp" | grep -q . && docker stop gulp && docker rm -fv gulp
+
+.PHONY: composer_install
+composer_install:
+        docker-compose exec -T drupal with-contenv bash -lc "COMPOSER_MEMORY_LIMIT=-1 composer install -o --prefer-dist --no-interaction"
+        $(MAKE) databases
+        docker-compose exec -T drupal with-contenv bash -lc "mysql --user=root --password=\$$DRUPAL_DEFAULT_DB_ROOT_PASSWORD --database=drupal_default --host=mariadb --port=3306 -A -e 'SET GLOBAL max_allowed_packet = 1024 * 1024 * 512;'"
+        -docker-compose exec -T drupal with-contenv bash -lc "chown -Rf nginx:www-data /var/www/drupal/web/../../data/private_files"
+
+.PHONY: composer_update
+composer_update: databases
+        docker-compose exec -T drupal with-contenv bash -lc "COMPOSER_MEMORY_LIMIT=-1 composer update -W -o --prefer-dist --no-interaction"
+        -docker-compose exec -T drupal with-contenv bash -lc "chown -Rf nginx:www-data /var/www/drupal/web/../../data/private_files"
