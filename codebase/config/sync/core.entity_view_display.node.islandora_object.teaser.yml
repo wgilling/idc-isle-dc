@@ -42,6 +42,7 @@ dependencies:
     - field.field.node.islandora_object.field_publisher
     - field.field.node.islandora_object.field_publisher_country
     - field.field.node.islandora_object.field_resource_type
+    - field.field.node.islandora_object.field_sort_date
     - field.field.node.islandora_object.field_spatial_coverage
     - field.field.node.islandora_object.field_subject
     - field.field.node.islandora_object.field_table_of_contents
@@ -115,6 +116,7 @@ hidden:
   field_publisher: true
   field_publisher_country: true
   field_resource_type: true
+  field_sort_date: true
   field_spatial_coverage: true
   field_subject: true
   field_table_of_contents: true

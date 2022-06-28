@@ -266,18 +266,6 @@ display:
           error_message: true
           plugin_id: search_api_term
       sorts:
-        type:
-          id: type
-          table: search_api_index_default_solr_index
-          field: type
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: ASC
-          exposed: false
-          expose:
-            label: 'Content type'
-          plugin_id: search_api
         search_api_relevance:
           id: search_api_relevance
           table: search_api_index_default_solr_index
@@ -301,6 +289,30 @@ display:
           exposed: true
           expose:
             label: Title
+          plugin_id: search_api
+        sort_date:
+          id: sort_date
+          table: search_api_index_default_solr_index
+          field: sort_date
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: true
+          expose:
+            label: Date
+          plugin_id: search_api
+        type:
+          id: type
+          table: search_api_index_default_solr_index
+          field: type
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: false
+          expose:
+            label: 'Content type'
           plugin_id: search_api
         title_1:
           id: title_1
@@ -5702,5 +5714,4 @@ display:
         - 'config:field.storage.node.field_subject'
         - 'config:field.storage.node.field_table_of_contents'
         - 'config:field.storage.node.field_title_language'
-        - 'config:field.storage.node.field_years'
         - 'config:search_api.index.default_solr_index'
