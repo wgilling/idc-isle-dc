@@ -40,6 +40,10 @@ jobs:
             - name: Run Update Hooks
               run: docker-compose exec -T drupal drush updatedb -y
 
+            # Rebuild the theme cache
+            - name: Rebuild Theme Cache
+              run: docker-compose exec -T drupal drush cc theme-registry
+
             # Drush tests
             - name: Drush test
               run: docker-compose exec -T drupal drush -d status

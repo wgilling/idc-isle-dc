@@ -298,3 +298,4 @@ theme-compile:
 	docker-compose exec drupal with-contenv bash -lc 'COMPOSER_MEMORY_LIMIT=-1 composer update jhu-idc/idc-ui-theme'
 	sudo find ./codebase/web/themes/contrib/idc-ui-theme/js -exec chown $(shell id -u):101 {} \;
 	cd codebase/web/themes/contrib/idc-ui-theme/js && rm -rf node_modules && npm install --force && bash autobuild.sh
+	docker-compose exec -T drupal bash -lc "drush cc theme-registry"
