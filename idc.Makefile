@@ -16,12 +16,12 @@ bootstrap: snapshot-empty default destroy-state up install \
 
 .PHONY: set-tmp
 set-tmp:
-	@echo "Creating and setting permissions on tmp & private directories"
+	@echo "Creating and setting $(shell id -u):101 permissions on tmp & private directories"
 	-docker-compose exec -T drupal /bin/sh -c "mkdir -p /var/www/drupal/web/sites/default/files/tmp"
-	-docker-compose exec -T drupal /bin/sh -c "if [[ ! \$$(stat -c \"%u:%G\" /var/www/drupal/web/sites/default/files/tmp) == \"nginx:www-data\" ]] ; then chown -R $(shell id -u):101 /var/www/drupal/web/sites/default/files ; fi ; "
+	-docker-compose exec -T drupal /bin/sh -c "if [[ ! \$$(stat -c \"%u:%G\" /var/www/drupal/web/sites/default/files/tmp) == \"$(shell id -u):101\" ]] ; then chown -R $(shell id -u):101 /var/www/drupal/web/sites/default/files ; fi ; "
 	-docker-compose exec -T drupal /bin/sh -c "if [[ ! \$$(stat -c \"%a\" /var/www/drupal/web/sites/default/files/tmp) == \"755\" ]] ; then chmod -R 775 /var/www/drupal/web/sites/default/files/tmp ; fi ; "
 	-docker-compose exec -T drupal /bin/sh -c "mkdir -p /tmp/private"
-	-docker-compose exec -T drupal /bin/sh -c "if [[ ! \$$(stat -c \"%u:%G\" /tmp/private) == \"nginx:www-data\" ]] ; then chown -R $(shell id -u):101 /tmp/private ; fi ; "
+	-docker-compose exec -T drupal /bin/sh -c "if [[ ! \$$(stat -c \"%u:%G\" /tmp/private) == \"$(shell id -u):101\" ]] ; then chown -R $(shell id -u):101 /tmp/private ; fi ; "
 	-docker-compose exec -T drupal /bin/sh -c "if [[ ! \$$(stat -c \"%a\" /tmp/private) == \"755\" ]] ; then chmod -R 775 /tmp/private ; fi ; "
 	@echo "  └─ Done"
 	@echo ""
@@ -47,7 +47,7 @@ destroy-state:
 .SILENT: composer-install
 composer-install:
 	echo "Installing via composer"
-	docker-compose exec drupal with-contenv bash -lc "COMPOSER_MEMORY_LIMIT=-1 COMPOSER_DISCARD_CHANGES=true composer install --no-interaction"
+	docker-compose exec drupal with-contenv bash -lc "COMPOSER_MEMORY_LIMIT=-1 COMPOSER_DISCARD_CHANGES=true composer install --no-interaction && drush updatedb -y && drush cr -y"
 	# Fix the masonry is a submodule error message.
 	[ -d codebase/web/libraries/masonry/.git/ ] && sudo rm -rf codebase/web/libraries/masonry/.git || true
 
@@ -184,9 +184,9 @@ start:
 	fi;
 	$(MAKE) solr-cores
 	# Fix for Github runner "the input device is not a TTY" error
+	docker-compose exec -T drupal bash -lc "bash /var/www/drupal/fix_permissions.sh /var/www/drupal/web nginx"
 	docker-compose exec -T drupal with-contenv bash -lc "drush search-api-solr:install-missing-fieldtypes"
 	docker-compose exec -T drupal with-contenv bash -lc "drush search-api:rebuild-tracker ; drush search-api-solr:finalize-index ; drush search-api:index"
-	docker-compose exec -T drupal bash -lc "bash /var/www/drupal/fix_permissions.sh /var/www/drupal/web nginx"
 	$(MAKE) set-tmp
 
 .PHONY: _docker-up-and-wait
@@ -298,3 +298,4 @@ theme-compile:
 	docker-compose exec drupal with-contenv bash -lc 'COMPOSER_MEMORY_LIMIT=-1 composer update jhu-idc/idc-ui-theme'
 	sudo find ./codebase/web/themes/contrib/idc-ui-theme/js -exec chown $(shell id -u):101 {} \;
 	cd codebase/web/themes/contrib/idc-ui-theme/js && rm -rf node_modules && npm install --force && bash autobuild.sh
+	docker-compose exec -T drupal bash -lc "drush cc theme-registry"

@@ -32,9 +32,17 @@ jobs:
             - name: Build Static
               run: make static-docker-compose.yml up
 
+            # Run fix_permissions Script
+            - name: Run fix_permissions Script
+              run: docker-compose exec -T drupal bash /var/www/drupal/fix_permissions.sh /var/www/drupal/web nginx
+
             # Run the updatedb command.
             - name: Run Update Hooks
               run: docker-compose exec -T drupal drush updatedb -y
+
+            # Rebuild the theme cache
+            - name: Rebuild Theme Cache
+              run: docker-compose exec -T drupal drush cc theme-registry
 
             # Drush tests
             - name: Drush test
