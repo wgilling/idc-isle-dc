@@ -47,7 +47,7 @@ destroy-state:
 .SILENT: composer-install
 composer-install:
 	echo "Installing via composer"
-	docker-compose exec drupal with-contenv bash -lc "COMPOSER_MEMORY_LIMIT=-1 COMPOSER_DISCARD_CHANGES=true composer install --no-interaction"
+	docker-compose exec -T drupal bash -lc "COMPOSER_MEMORY_LIMIT=-1 COMPOSER_DISCARD_CHANGES=true composer install --no-interaction --no-progress"
 
 
 .PHONY: snapshot-image
