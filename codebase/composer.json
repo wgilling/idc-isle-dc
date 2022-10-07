@@ -265,13 +265,11 @@
         ],
         "post-install-cmd": [
             "@composer drupal:scaffold",
-            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
-            "drush updatedb -y"
+            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
         ],
         "post-update-cmd": [
             "@composer drupal:scaffold",
-            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles",
-            "drush updatedb -y"
+            "DrupalProject\\composer\\ScriptHandler::createRequiredFiles"
         ]
     },
     "extra": {
