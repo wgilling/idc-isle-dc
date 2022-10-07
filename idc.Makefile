@@ -183,12 +183,12 @@ start:
 	-docker-compose exec -T drupal /bin/sh -c "drush php-eval \"\Drupal::keyValue('system.schema')->delete('remote_stream_wrapper')\" || true"
 	-docker-compose exec -T drupal /bin/sh -c "drush php-eval \"\Drupal::keyValue('system.schema')->delete('matomo')\" || true"
 	$(MAKE) composer-install
-	docker-compose exec -T drupal with-contenv bash -lc "drush updatedb -y"
+	docker-compose exec -T drupal bash -lc "drush updatedb -y"
 	$(MAKE) config-import
 	# Fix for Github runner "the input device is not a TTY" error
 	docker-compose exec -T drupal bash -lc "bash /var/www/drupal/fix_permissions.sh /var/www/drupal/web nginx"
-	docker-compose exec -T drupal with-contenv bash -lc "drush search-api-solr:install-missing-fieldtypes"
-	docker-compose exec -T drupal with-contenv bash -lc "drush search-api:rebuild-tracker ; drush search-api-solr:finalize-index ; drush search-api:index"
+	-docker-compose exec -T drupal bash -lc "drush search-api-solr:install-missing-fieldtypes"
+	-docker-compose exec -T drupal bash -lc "drush search-api:rebuild-tracker ; drush search-api-solr:finalize-index ; drush search-api:index"
 	$(MAKE) solr-cores
 
 .PHONY: _docker-up-and-wait
