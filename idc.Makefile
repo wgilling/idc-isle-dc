@@ -47,9 +47,8 @@ destroy-state:
 .SILENT: composer-install
 composer-install:
 	echo "Installing via composer"
-	docker-compose exec drupal with-contenv bash -lc "COMPOSER_MEMORY_LIMIT=-1 COMPOSER_DISCARD_CHANGES=true composer install --no-interaction && drush updatedb -y && drush cr -y"
-	# Fix the masonry is a submodule error message.
-	[ -d codebase/web/libraries/masonry/.git/ ] && sudo rm -rf codebase/web/libraries/masonry/.git || true
+	docker-compose exec -T drupal bash -lc "COMPOSER_MEMORY_LIMIT=-1 COMPOSER_DISCARD_CHANGES=true composer install --no-interaction --no-progress"
+
 
 .PHONY: snapshot-image
 .SILENT: snapshot-image
@@ -173,21 +172,23 @@ start:
 		echo "No Drupal state found.  Loading from snapshot, and importing config from config/sync"; \
 		${MAKE} db_restore; \
 		${MAKE} _docker-up-and-wait; \
-		${MAKE} composer-install; \
-		if [ ! -f codebase/web/sites/default/files/generic.png ] ; then cp "codebase/web/core/modules/media/images/icons/generic.png" "codebase/web/sites/default/files/generic.png" || true ; fi ; \
-		${MAKE} config-import; \
 	else \
 		echo "Pre-existing Drupal state found, not loading db from snapshot"; \
 		${MAKE} _docker-up-and-wait; \
-		${MAKE} composer-install; \
-		${MAKE} config-import; \
 	fi;
-	$(MAKE) solr-cores
+	# This is a bit of a hack to make the solr update work. This can be removed once the solr update is applied to production.
+	-docker-compose exec -T drupal /bin/sh -c "drush cdel core.extension module.search_api_solr_defaults || true"
+	-docker-compose exec -T drupal /bin/sh -c "drush sql-query \"DELETE FROM key_value WHERE collection='system.schema' AND name='search_api_solr_defaults';\" || true"
+	-docker-compose exec -T drupal /bin/sh -c "drush php-eval \"\Drupal::keyValue('system.schema')->delete('remote_stream_wrapper')\" || true"
+	-docker-compose exec -T drupal /bin/sh -c "drush php-eval \"\Drupal::keyValue('system.schema')->delete('matomo')\" || true"
+	$(MAKE) composer-install
+	docker-compose exec -T drupal bash -lc "drush updatedb -y"
+	$(MAKE) config-import
 	# Fix for Github runner "the input device is not a TTY" error
 	docker-compose exec -T drupal bash -lc "bash /var/www/drupal/fix_permissions.sh /var/www/drupal/web nginx"
-	docker-compose exec -T drupal with-contenv bash -lc "drush search-api-solr:install-missing-fieldtypes"
-	docker-compose exec -T drupal with-contenv bash -lc "drush search-api:rebuild-tracker ; drush search-api-solr:finalize-index ; drush search-api:index"
-	$(MAKE) set-tmp
+	-docker-compose exec -T drupal bash -lc "drush search-api-solr:install-missing-fieldtypes"
+	-docker-compose exec -T drupal bash -lc "drush search-api:rebuild-tracker ; drush search-api-solr:finalize-index ; drush search-api:index"
+	$(MAKE) solr-cores
 
 .PHONY: _docker-up-and-wait
 .SILENT: _docker-up-and-wait
@@ -195,11 +196,6 @@ _docker-up-and-wait:
 	docker-compose up -d
 	sleep 5
 	docker-compose exec -T drupal /bin/sh -c "while true ; do echo \"Waiting for Drupal to start ...\" ; if [ -d \"/var/run/s6/services/nginx\" ] ; then s6-svwait -u /var/run/s6/services/nginx && exit 0 ; else sleep 5 ; fi done"
-	# This is a bit of a hack to make the solr update work. This can be removed once the solr update is applied to production.
-	-docker-compose exec -T drupal /bin/sh -c "drush cdel core.extension module.search_api_solr_defaults"
-	-docker-compose exec -T drupal /bin/sh -c "drush sql-query \"DELETE FROM key_value WHERE collection='system.schema' AND name='search_api_solr_defaults';\""
-	-docker-compose exec -T drupal /bin/sh -c "drush php-eval \"\Drupal::keyValue('system.schema')->delete('remote_stream_wrapper')\""
-	-docker-compose exec -T drupal /bin/sh -c "drush php-eval \"\Drupal::keyValue('system.schema')->delete('matomo')\""
 	$(MAKE) cache-rebuild
 
 
@@ -242,8 +238,8 @@ static-docker-compose.yml: static-drupal-image
 		else \
 			echo $$line >> .env_static ; \
 		fi \
-	    done < $${ENV_FILE} && \
-	    echo DRUPAL_STATIC_TAG=${GIT_TAG} >> .env_static
+		done < $${ENV_FILE} && \
+		echo DRUPAL_STATIC_TAG=${GIT_TAG} >> .env_static
 	mv $${ENV_FILE} .env.bak
 	mv .env_static $${ENV_FILE}
 	$(MAKE) -B docker-compose.yml args="--env-file $${ENV_FILE}" || mv .env.bak $${ENV_FILE}
