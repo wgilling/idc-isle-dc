@@ -162,7 +162,7 @@ start:
 	for i in $$(seq 5) ; do \
 		echo "waiting for mysql to start..."; \
 		sleep 5; \
-		BASIC_DBS_PRESENT=$$(docker-compose exec -T mariadb [ ! -S "/var/lib/mysql/mysql.sock" ] || mysql mysql -N -e "SELECT count(*) from information_schema.SCHEMATA;"); \
+		BASIC_DBS_PRESENT=$$(docker-compose exec -T mariadb mysql mysql -N -e "SELECT count(*) from information_schema.SCHEMATA;"); \
 		if [  "$$?" -gt "0" ]; then continue; fi; \
 		if [ ! -n "$$BASIC_DBS_PRESENT" ]; then continue; fi; \
 		if [ ! "$$BASIC_DBS_PRESENT" -gt "0" ]; then continue; fi; \
