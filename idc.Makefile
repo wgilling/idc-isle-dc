@@ -242,8 +242,8 @@ static-docker-compose.yml: static-drupal-image
 		else \
 			echo $$line >> .env_static ; \
 		fi \
-	    done < $${ENV_FILE} && \
-	    echo DRUPAL_STATIC_TAG=${GIT_TAG} >> .env_static
+		done < $${ENV_FILE} && \
+		echo DRUPAL_STATIC_TAG=${GIT_TAG} >> .env_static
 	mv $${ENV_FILE} .env.bak
 	mv .env_static $${ENV_FILE}
 	$(MAKE) -B docker-compose.yml args="--env-file $${ENV_FILE}" || mv .env.bak $${ENV_FILE}
