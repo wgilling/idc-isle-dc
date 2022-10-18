@@ -42,9 +42,7 @@ jobs:
 
             # Temp fix for 9.4 Add github token to composer
             - name: Temp fix for 9.4 Add github token to composer
-              run: docker-compose exec drupal with-contenv bash -lc "composer config -g github-oauth.github.com ${{ GH_TOKEN }}"
-              env:
-                GH_TOKEN: ${{ secrets.GH_TOKEN }}
+              run: docker-compose exec drupal with-contenv bash -lc "composer config -g github-oauth.github.com ${{ secrets.GH_TOKEN }}"
 
             # Temp fix for 9.4 run incremental_version_updater.sh
             - name: Temp fix for 9.4 run incremental_version_updater.sh
