@@ -53,7 +53,6 @@ function update_version {
 # If the current version is the expected version, then run the update.
 if [ "$CURRENT_VERSION" == "$STARTING_POINT_VERSION" ]; then
     echo "Updating Drupal from $(cat web/core/lib/Drupal.php | grep 'const VERSION ' | cut -d\' -f2) to $HIGHEST_VERSION_IN_ARRAY"
-    rm -rf /var/www/drupal/vendor/ /var/www/drupal/config/sync/
     composer clearcache
     COMPOSER_MEMORY_LIMIT=-1 COMPOSER_DISCARD_CHANGES=true composer install --no-interaction --no-progress --no-dev
 

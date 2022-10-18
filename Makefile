@@ -398,7 +398,7 @@ clean:
 	echo "**DANGER** About to rm your SERVER data subdirs, your docker volumes and your codebase/web"
 	$(MAKE) confirm
 	-docker-compose down -v --remove-orphans
-	$(MAKE) set-codebase-owner
-	sudo rm -fr certs
-	git clean -xffd .
+	# $(MAKE) set-codebase-owner
+	sudo rm -fr codebase certs
+	# git clean -xffd .
 	git checkout codebase
