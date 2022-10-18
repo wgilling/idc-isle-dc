@@ -40,11 +40,16 @@ function update_version {
         composer clearcache
         composer require drupal/core-recommended:${DRUPAL_VERSIONS[-1]} drupal/core-composer-scaffold:${DRUPAL_VERSIONS[-1]} drupal/core-project-message:${DRUPAL_VERSIONS[-1]} --update-with-all-dependencies || update_version
         wait
-        unset DRUPAL_VERSIONS[$[${#DRUPAL_VERSIONS[@]}-1]]
+
+        if (( ${#DRUPAL_VERSIONS[@]} )); then
+            unset DRUPAL_VERSIONS[$[${#DRUPAL_VERSIONS[@]}-1]]
+        fi
+
         drush updb -y
         drush cr
         drush cron
         wait
+
         # Check version again
         update_version
     fi
