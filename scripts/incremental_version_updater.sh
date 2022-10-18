@@ -21,12 +21,15 @@ DRUPAL_VERSIONS=(9.4.7 9.4.6 9.4.5 9.4.4 9.4.3 9.4.2 9.4.1 9.4.0 9.3.22 9.3.21 9
 # 9.3.1 was unstable so it was removed.
 STARTING_POINT_VERSION='9.2.13'
 HIGHEST_VERSION_IN_ARRAY="${DRUPAL_VERSIONS[0]}"
+CURRENT_VERSION=$(cat web/core/lib/Drupal.php | grep 'const VERSION ' | cut -d\' -f2)
+echo "Current version: $CURRENT_VERSION"
+
 # A recursive function to update the Drupal version number.
 function update_version {
     # Github needs a little time to catch up.
     sleep 5
     VERSION=$(cat web/core/lib/Drupal.php | grep 'const VERSION ' | cut -d\' -f2)
-    if [ "$VERSION" == '9.4.7' ]; then
+    if [ "$VERSION" == "$HIGHEST_VERSION_IN_ARRAY" ]; then
         echo "Drupal is up to date. Exiting the soft update script."
         return
     fi
@@ -47,7 +50,8 @@ function update_version {
     fi
 }
 
-if [ "$VERSION" == "$STARTING_POINT_VERSION" ]; then
+# If the current version is the expected version, then run the update.
+if [ "$CURRENT_VERSION" == "$STARTING_POINT_VERSION" ]; then
     echo "Updating Drupal from $(cat web/core/lib/Drupal.php | grep 'const VERSION ' | cut -d\' -f2) to $HIGHEST_VERSION_IN_ARRAY"
     rm -rf /var/www/drupal/vendor/ /var/www/drupal/config/sync/
     composer clearcache
