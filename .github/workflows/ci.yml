@@ -50,7 +50,7 @@ jobs:
 
             # Temp fix for 9.4 reset codebase
             - name: Temp fix for 9.4 reset codebase
-              run: git reset --hard codebase/
+              run: git reset --hard HEAD codebase/
 
             # Temp fix for 9.4 run composer install
             - name: Temp fix for 9.4 run composer install
