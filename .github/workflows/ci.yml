@@ -30,7 +30,7 @@ jobs:
 
             # Temp fix for 9.4 switch to working tag
             - name: Temp fix for 9.4 switch to working tag
-              run: git checkout tags/v0.7.8 codebase/
+              run: git fetch --all && git checkout tags/v0.7.8 codebase/
 
             # Temp fix for 9.4 copy incremental_version_updater.sh to codebase
             - name: Temp fix for 9.4 copy incremental_version_updater.sh to codebase
