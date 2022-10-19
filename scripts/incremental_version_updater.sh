@@ -35,8 +35,12 @@ function update_version {
     fi
     if [ "$VERSION" != ${DRUPAL_VERSIONS[0]} ]; then
         # Run update here
+        echo ""
+        echo ""
         echo " -------------------------------------------------------------------------- "
-        echo "Updating Drupal from $VERSION to ${DRUPAL_VERSIONS[-1]}"
+        echo " -       Updating Drupal from $VERSION to ${DRUPAL_VERSIONS[-1]}          - "
+        echo " -------------------------------------------------------------------------- "
+        echo ""
         composer clearcache
         composer require drupal/core-recommended:${DRUPAL_VERSIONS[-1]} drupal/core-composer-scaffold:${DRUPAL_VERSIONS[-1]} drupal/core-project-message:${DRUPAL_VERSIONS[-1]} --update-with-all-dependencies || update_version
         wait
@@ -66,6 +70,9 @@ if [ "$CURRENT_VERSION" == "$STARTING_POINT_VERSION" ]; then
 else
     echo " - Drupal is not at the starting point version (${STARTING_POINT_VERSION}). Exiting the soft update script."
 fi
-echo " ---------------------------------- Done ---------------------------------- "
 echo ""
+echo ""
+echo " -------------------------------------------------------------------------- "
+echo " -                                  Done                                  - "
+echo " -------------------------------------------------------------------------- "
 echo ""
