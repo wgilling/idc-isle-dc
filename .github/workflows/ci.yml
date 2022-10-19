@@ -64,13 +64,13 @@ jobs:
             - name: Temp fix for 9.4 run composer install
               run: make composer-install
 
-            # Temp fix for 9.4 run config import
-            - name: Temp fix for 9.4 run config import
-              run: make config-import
-
             # Run fix_permissions Script
             - name: Run fix_permissions Script
               run: docker-compose exec -T drupal bash /var/www/drupal/fix_permissions.sh /var/www/drupal/web nginx
+
+            # Temp fix for 9.4 run config import
+            - name: Temp fix for 9.4 run config import
+              run: make config-import
 
             # Run the updatedb command.
             - name: Run Update Hooks
