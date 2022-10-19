@@ -42,12 +42,17 @@ function update_version {
     REMAINING=$(curl -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GH_TOKEN" https://api.github.com/rate_limit | jq .rate.remaining)
 
     if [[ "$REMAINING" -lt 1 ]]; then
-        WAIT_TIME=$(( $GH - $now ))
-        # if WAIT_TIME is greater than 0, wait that long.
-        if [[ "$WAIT_TIME" -gt 0 ]]; then
-            echo "Waiting $WAIT_TIME seconds for Github to catch up. Time: $(date --date=@$GH +%H:%M:%S)"
-            sleep $WAIT_TIME
-        fi
+        # while wait_time is greater than 0, sleep for 1 minute and check again.
+        echo ""
+        echo ""
+        echo " -------------------------------------------------------------------------- "
+        while [ $(( $GH - $now )) -gt 0 ]; do
+            now=$(date '+%s')
+            echo " - Waiting $(( $GH - $now )) seconds for Github to catch up. Time: $(date --date=@$GH +%H:%M:%S) - "
+            sleep 30
+        done
+        echo " -------------------------------------------------------------------------- "
+        echo ""
     fi
 
     VERSION=$(cat web/core/lib/Drupal.php | grep 'const VERSION ' | cut -d\' -f2)
