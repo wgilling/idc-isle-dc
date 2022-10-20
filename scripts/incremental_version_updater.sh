@@ -14,15 +14,6 @@ echo " -              Running a soft update of the codebase                     
 echo " -------------------------------------------------------------------------- "
 echo ""
 
-# Run this from the root.
-# TAG='v0.7.8'
-# git checkout tags/$TAG codebase/
-# cp scripts/incremental_version_updater.sh codebase/incremental_version_updater.sh
-# Run `make up`
-# docker-compose exec -T drupal bash -lc "cd /var/www/drupal && bash /var/www/drupal/incremental_version_updater.sh"
-# git reset --hard codebase/
-# Then git checkout codebase/, composer install, config import, etc.
-
 # Drupal version list was created by hand.
 DRUPAL_VERSIONS=(9.4.7 9.4.6 9.4.5 9.4.4 9.4.3 9.4.2 9.4.1 9.4.0 9.3.22 9.3.21 9.3.20 9.3.19 9.3.18 9.3.17 9.3.16 9.3.15 9.3.14 9.3.13 9.3.12 9.3.11 9.3.10 9.3.9 9.3.8 9.3.7 9.3.6 9.3.5 9.3.4 9.3.3 9.3.2 9.3.0 9.2.21 9.2.20 9.2.19 9.2.18 9.2.17 9.2.16 9.2.15 9.2.14)
 # 9.3.1 was unstable so it was removed.
@@ -37,23 +28,25 @@ apk add jq --quiet
 # A recursive function to update the Drupal version number.
 function update_version {
     # Github's API is rate limited. Wait a bit.
-    now=$(date '+%s')
-    GH=$(curl -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GH_TOKEN" https://api.github.com/rate_limit | jq .rate.reset)
     REMAINING=$(curl -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GH_TOKEN" https://api.github.com/rate_limit | jq .rate.remaining)
 
-    if [[ "$REMAINING" -lt 1 ]]; then
-        # while wait_time is greater than 0, sleep for 1 minute and check again.
+    # while remaining request count is too low to complete this cycle, sleep for 30 seconds and check again.
+    while [ "$REMAINING" -lt 450 ]; do
+        REMAINING=$(curl -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GH_TOKEN" https://api.github.com/rate_limit | jq .rate.remaining)
+        GH=$(curl -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GH_TOKEN" https://api.github.com/rate_limit | jq .rate.reset)
+        now=$(date '+%s')
         echo ""
         echo ""
         echo " -------------------------------------------------------------------------- "
-        while [ $(( $GH - $now )) -gt 0 ]; do
-            now=$(date '+%s')
-            echo " - Waiting $(( $GH - $now )) seconds for Github to catch up. Time: $(date --date=@$GH +%H:%M:%S) - "
-            sleep 30
-        done
+        echo " - Github remaining request count: $REMAINING "
+        echo " - Github's hourly rate limit is close to going over. "
+        echo " - Waiting $(( $(( $GH - $now )) / 60 )) minutes for Github rate limit to reset."
+        echo " - Estimated reset time: $(date --date=@$GH +%H:%M:%S) "
         echo " -------------------------------------------------------------------------- "
-        echo ""
-    fi
+        sleep 30
+    done
+    echo " -------------------------------------------------------------------------- "
+    echo ""
 
     VERSION=$(cat web/core/lib/Drupal.php | grep 'const VERSION ' | cut -d\' -f2)
     if [ "$VERSION" == "$HIGHEST_VERSION_IN_ARRAY" ]; then
@@ -69,6 +62,7 @@ function update_version {
         echo " -       Updating Drupal from $VERSION to ${DRUPAL_VERSIONS[-1]}          - "
         echo " -------------------------------------------------------------------------- "
         echo ""
+        echo "Github remaining count: $REMAINING"
         composer clearcache
         composer require drupal/core-recommended:${DRUPAL_VERSIONS[-1]} drupal/core-composer-scaffold:${DRUPAL_VERSIONS[-1]} drupal/core-project-message:${DRUPAL_VERSIONS[-1]} --update-with-all-dependencies || update_version
         wait
