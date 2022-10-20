@@ -25,12 +25,10 @@ echo "Current version: $CURRENT_VERSION"
 
 apk add jq --quiet
 
-# A recursive function to update the Drupal version number.
-function update_version {
-    # Github's API is rate limited. Wait a bit.
+function check_github_rate_limit() {
     REMAINING=$(curl -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GH_TOKEN" https://api.github.com/rate_limit | jq .rate.remaining)
 
-    # while remaining request count is too low to complete this cycle, sleep for 30 seconds and check again.
+    # While remaining request count is too low to complete this cycle, sleep for 30 seconds and check again.
     while [ "$REMAINING" -lt 450 ]; do
         REMAINING=$(curl -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GH_TOKEN" https://api.github.com/rate_limit | jq .rate.remaining)
         GH=$(curl -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GH_TOKEN" https://api.github.com/rate_limit | jq .rate.reset)
@@ -47,6 +45,12 @@ function update_version {
     done
     echo " -------------------------------------------------------------------------- "
     echo ""
+}
+
+# A recursive function to update the Drupal version number.
+function update_version {
+    # Github's API is rate limited. This function checks if the rate limit is exceeded.
+    check_github_rate_limit
 
     VERSION=$(cat web/core/lib/Drupal.php | grep 'const VERSION ' | cut -d\' -f2)
     if [ "$VERSION" == "$HIGHEST_VERSION_IN_ARRAY" ]; then
@@ -94,6 +98,16 @@ else
 fi
 
 apk del jq --quiet
+
+echo ""
+echo ""
+echo " -------------------------------------------------------------------------- "
+echo " -                           Almost Done                                  - "
+echo " -------------------------------------------------------------------------- "
+echo " Github's rate limit could be too low to complete the tests. Checking... "
+echo ""
+
+check_github_rate_limit
 
 echo ""
 echo ""
