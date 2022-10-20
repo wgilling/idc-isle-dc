@@ -39,7 +39,7 @@ function check_github_rate_limit() {
         echo " - Github remaining request count: $REMAINING "
         echo " - Github's hourly rate limit is close to going over. "
         echo " - Waiting $(( $(( $GH - $now )) / 60 )) minutes for Github rate limit to reset."
-        echo " - Estimated reset time: $(date --date=@$GH +%H:%M:%S) "
+        echo " - Estimated reset time: $(date -d \"1970-01-01 UTC $GH seconds\" +\"%T\") "
         echo " -------------------------------------------------------------------------- "
         sleep 30
     done
