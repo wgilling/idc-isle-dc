@@ -33,14 +33,12 @@ function check_github_rate_limit() {
         REMAINING=$(curl -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GH_TOKEN" https://api.github.com/rate_limit | jq .rate.remaining)
         GH=$(curl -H "Accept: application/vnd.github+json" -H "Authorization: Bearer $GH_TOKEN" https://api.github.com/rate_limit | jq .rate.reset)
         now=$(date '+%s')
-        reset_time=$(date -d "1970-01-01 UTC $GH seconds" +"%T")
         echo ""
         echo ""
         echo " -------------------------------------------------------------------------- "
         echo " - Github remaining request count: $REMAINING "
         echo " - Github's hourly rate limit is close to going over. "
         echo " - Waiting $(( $(( $GH - $now )) / 60 )) minutes for Github rate limit to reset."
-        echo " - Estimated reset time: $reset_time "
         echo " -------------------------------------------------------------------------- "
         sleep 30
     done
