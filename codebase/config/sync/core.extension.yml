@@ -4,7 +4,6 @@ module:
   action: 0
   admin_toolbar: 0
   admin_toolbar_links_access_filter: 0
-  at_tool: 0
   automated_cron: 0
   basic_auth: 0
   big_pipe: 0
@@ -13,6 +12,7 @@ module:
   breakpoint: 0
   captcha: 0
   ckeditor: 0
+  color: 0
   comment: 0
   config: 0
   config_update: 0
@@ -72,7 +72,6 @@ module:
   islandora_core_feature: 0
   islandora_defaults: 0
   islandora_fits: 0
-  islandora_ghsa_route_fix: 0
   islandora_iiif: 0
   islandora_image: 0
   islandora_oaipmh: 0
@@ -84,8 +83,6 @@ module:
   islandora_text_extraction: 0
   islandora_text_extraction_defaults: 0
   islandora_video: 0
-  jquery_ui: 0
-  jquery_ui_accordion: 0
   jsonapi: 0
   jsonld: 0
   jwt: 0
@@ -124,6 +121,7 @@ module:
   s3fs: 0
   search_api: 0
   search_api_solr: 0
+  search_api_solr_defaults: 0
   serialization: 0
   shortcut: 0
   simplesamlphp_auth: 0

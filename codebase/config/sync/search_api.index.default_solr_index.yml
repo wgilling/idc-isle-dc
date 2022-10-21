@@ -101,9 +101,6 @@ third_party_settings:
       maxntp: 2000
       boost: false
       interestingTerms: none
-    term_modifiers:
-      slop: 3
-      fuzzy: 1
     advanced:
       index_prefix: ''
       collection: ''
@@ -762,7 +759,7 @@ field_settings:
     type: text
     configuration:
       roles:
-        - anonymous
+        anonymous: anonymous
       view_mode:
         'entity:node':
           article: search_index
@@ -915,7 +912,6 @@ processor_settings:
   entity_status:
     weights:
       preprocess_index: -10
-  entity_type: {  }
   hierarchy:
     weights:
       preprocess_index: -45
@@ -927,7 +923,6 @@ processor_settings:
     prefix: '<strong>'
     suffix: '</strong>'
     excerpt: true
-    excerpt_always: false
     excerpt_length: 256
     exclude_fields:
       - rendered_item
@@ -963,5 +958,4 @@ tracker_settings:
 options:
   cron_limit: 50
   index_directly: true
-  track_changes_in_references: true
 server: default_solr_server
