@@ -11,8 +11,6 @@ id: resource_type
 name: 'Resource Type'
 weight: 0
 min_count: 1
-missing: false
-missing_label: others
 url_alias: resource_type
 facet_source_id: 'search_api:views_rest__solr_search_content__rest_export_1'
 field_identifier: field_resource_type
@@ -21,9 +19,6 @@ hard_limit: 0
 exclude: false
 use_hierarchy: false
 keep_hierarchy_parents_active: false
-hierarchy:
-  type: taxonomy
-  config: {  }
 expand_hierarchy: false
 enable_parent_when_child_gets_disabled: true
 widget:
