@@ -20,7 +20,8 @@ DRUPAL_VERSIONS=(9.4.7 9.4.6 9.4.5 9.4.4 9.4.3 9.4.2 9.4.1 9.4.0 9.3.22 9.3.21 9
 
 STARTING_POINT_VERSION='9.2.13'
 HIGHEST_VERSION_IN_ARRAY="${DRUPAL_VERSIONS[0]}"
-CURRENT_VERSION=$(cat web/core/lib/Drupal.php | grep 'const VERSION ' | cut -d\' -f2)
+# CURRENT_VERSION=$(cat web/core/lib/Drupal.php | grep 'const VERSION ' | cut -d\' -f2)
+CURRENT_VERSION=$(drush cr && drush core-status --fields=drupal-version | cut -d\: -f2 | sed 's/ //g')
 echo "Current version: $CURRENT_VERSION"
 
 apk add jq --quiet
