@@ -32,6 +32,9 @@ drush updatedb -y
 drush cc theme-registry
 drush -d status
 
+CURRENT_VERSION=$(drush cr && drush core-status --fields=drupal-version | cut -d\: -f2 | sed 's/ //g')
+echo "Current Drupal version: $CURRENT_VERSION"
+
 echo ""
 echo ""
 echo " -------------------------------------------------------------------------- "
