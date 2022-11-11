@@ -201,6 +201,7 @@ static-drupal-image:
 	IMAGE=${REPOSITORY}/drupal-static:${GIT_TAG} ; \
 	EXISTING=`docker images -q $$IMAGE` ; \
 	if test -z "$$EXISTING" ; then \
+		echo "Building Drupal image with base:  $${REPOSITORY}/drupal:$${TAG} " ; \
 		docker pull $${IMAGE} 2>/dev/null || \
 		docker build --build-arg REPOSITORY=$${REPOSITORY} --build-arg TAG=$${TAG} -t $${IMAGE} .; \
 	else \
