@@ -10,28 +10,8 @@ GIT_TAG := $(shell git describe --tags --always)
 .SILENT: bootstrap
 bootstrap: snapshot-empty default destroy-state up install \
 	update-settings-php update-config-from-environment solr-cores run-islandora-migrations \
-	cache-rebuild
 	git checkout -- .env
 	@echo "  └─ Bootstrap complete."
-
-.PHONY: set-tmp
-set-tmp:
-	@echo "Creating and setting $(shell id -u):101 permissions on tmp & private directories"
-	-docker-compose exec -T drupal /bin/sh -c "mkdir -p /var/www/drupal/web/sites/default/files/tmp"
-	-docker-compose exec -T drupal /bin/sh -c "if [[ ! \$$(stat -c \"%u:%G\" /var/www/drupal/web/sites/default/files/tmp) == \"$(shell id -u):101\" ]] ; then chown -R $(shell id -u):101 /var/www/drupal/web/sites/default/files ; fi ; "
-	-docker-compose exec -T drupal /bin/sh -c "if [[ ! \$$(stat -c \"%a\" /var/www/drupal/web/sites/default/files/tmp) == \"755\" ]] ; then chmod -R 775 /var/www/drupal/web/sites/default/files/tmp ; fi ; "
-	-docker-compose exec -T drupal /bin/sh -c "mkdir -p /tmp/private"
-	-docker-compose exec -T drupal /bin/sh -c "if [[ ! \$$(stat -c \"%u:%G\" /tmp/private) == \"$(shell id -u):101\" ]] ; then chown -R $(shell id -u):101 /tmp/private ; fi ; "
-	-docker-compose exec -T drupal /bin/sh -c "if [[ ! \$$(stat -c \"%a\" /tmp/private) == \"755\" ]] ; then chmod -R 775 /tmp/private ; fi ; "
-	@echo "  └─ Done"
-	@echo ""
-
-# Rebuilds the Drupal cache
-.PHONY: cache-rebuild
-.SILENT: cache-rebuild
-cache-rebuild: set-tmp
-	echo "rebuilding Drupal cache..."
-	docker-compose exec -T drupal drush cr -y
 
 .PHONY: destroy-state
 .SILENT: destroy-state
@@ -42,13 +22,6 @@ destroy-state:
 	docker-compose down -v
 	-rm -rf docker-compose.yml
 	-rm -rf .docker-compose.yml
-
-.PHONY: composer-install
-.SILENT: composer-install
-composer-install:
-	echo "Installing via composer"
-	docker-compose exec -T drupal bash -lc "COMPOSER_MEMORY_LIMIT=-1 COMPOSER_DISCARD_CHANGES=true composer install --no-interaction --no-progress"
-
 
 .PHONY: snapshot-image
 .SILENT: snapshot-image
@@ -189,7 +162,6 @@ _docker-up-and-wait:
 		docker-compose exec -T drupal with-contenv bash -lc "composer config -g github-oauth.github.com ${GITHUB_TOKEN}" & echo '' ; \
 	fi;
 	docker-compose exec -T drupal /bin/sh -c "while true ; do echo \"Waiting for Drupal to start ...\" ; if [ -d \"/var/run/s6/services/nginx\" ] ; then s6-svwait -u /var/run/s6/services/nginx && exit 0 ; else sleep 5 ; fi done"
-	$(MAKE) cache-rebuild
 
 # Static drupal image, with codebase baked in.  This image
 # is tagged based on the current git hash/tag.  If the image is not present

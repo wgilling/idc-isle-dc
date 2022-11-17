@@ -8,10 +8,6 @@ echo " -              Running a Start up script                                 
 echo " -------------------------------------------------------------------------- "
 echo ""
 
-COMPOSER_MEMORY_LIMIT=-1 COMPOSER_DISCARD_CHANGES=true composer install --no-interaction --no-progress
-
-bash /var/www/drupal/fix_permissions.sh /var/www/drupal/web nginx
-
 # This is a workaround for a bug.
 drush cdel core.extension module.search_api_solr_defaults || true
 drush sql-query "DELETE FROM key_value WHERE collection='system.schema' AND name='search_api_solr_defaults';" || true
