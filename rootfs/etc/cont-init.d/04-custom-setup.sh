@@ -15,16 +15,24 @@ function main {
     update_settings_php "${site}"
     # Ensure that settings which depend on environment variables like service urls are set dynamically on startup.
     configure_islandora_module "${site}"
-    configure_matomo_module "${site}"
     configure_openseadragon "${site}"
     configure_islandora_default_module "${site}"
-    # The following commands require several services
-    # to be up and running before they can complete.
-    wait_for_required_services "${site}"
+
+   
+    # JHU: Fedora has been removed, so use alternate call syntax with SERVICES specified:
+    #wait_for_required_services "${site}"
+    wait_for_required_services "${site}" SOLR 
+
     # Create missing solr cores.
     create_solr_core_with_default_config "${site}"
+
+    # JHU: no triplestore
     # Create namespace assumed one per site.
-    create_blazegraph_namespace_with_default_properties "${site}"
+    #create_blazegraph_namespace_with_default_properties "${site}"
+
+    # JHU: SKIP BELOW
+exit 0
+
     # Need to run migration to get expected default content, now that our required services are running.
     import_islandora_migrations "${site}"
     # Workaround for this issue (only seems to apply to islandora_fits):
