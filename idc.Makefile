@@ -13,6 +13,13 @@ bootstrap: snapshot-empty default destroy-state up install \
 	git checkout -- .env
 	@echo "  └─ Bootstrap complete."
 
+# Rebuilds the Drupal cache
+.PHONY: cache-rebuild
+.SILENT: cache-rebuild
+cache-rebuild: set-tmp
+	echo "rebuilding Drupal cache..."
+	docker-compose exec -T drupal drush cr -y
+
 .PHONY: destroy-state
 .SILENT: destroy-state
 destroy-state:
@@ -22,6 +29,12 @@ destroy-state:
 	docker-compose down -v
 	-rm -rf docker-compose.yml
 	-rm -rf .docker-compose.yml
+
+.PHONY: composer-install
+.SILENT: composer-install
+composer-install:
+	echo "Installing via composer"
+	docker-compose exec -T drupal bash -lc "COMPOSER_MEMORY_LIMIT=-1 COMPOSER_DISCARD_CHANGES=true composer install --no-interaction --no-progress"
 
 .PHONY: snapshot-image
 .SILENT: snapshot-image
