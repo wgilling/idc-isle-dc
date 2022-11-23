@@ -17,11 +17,13 @@ echo -e $help
 exit
 fi
 
-cd $path
-
 set -e
-#CHMOD="echo /bin/chmod"
-CHMOD="/bin/chmod -v"
+
+### IDC Customizations below here to remove multiple recursive find commands:
+
+CHMOD="/bin/chmod"
+
+cd $path
 
 echo -e "Fixing directory permissions beneath '$path'"
 find . -type d \( \
@@ -39,22 +41,3 @@ find . -type f \( \
      #> /tmp/fix_permissions-files.log
  
 exit 0
-
-# This is now performed in the Docker COPY layer:
-#echo -e "Changing ownership of all contents of \"${path}\" :\n user => \"${user}\" \t group => \"${group}\"\n"
-#chown -R ${user}:${group} .
-
-# Replaced by above finds:
-#echo "Changing permissions of all directories inside \"${path}\" to \"750\"..."
-#1 find . -type d -exec chmod u=rwx,g=rx,o= {} \;
-#echo -e "Changing permissions of all files inside \"${path}\" to \"640\"...\n"
-#2 find . -type f -exec chmod u=rw,g=r,o= {} \;
-#
-#cd $path/sites;
-#
-#echo "Changing permissions of \"files\" directories in \"${path}/sites\" to \"770\"..."
-#3 find . -type d -name files -exec chmod ug=rwx,o= '{}' \;
-#echo "Changing permissions of all files inside all \"files\" directories in \"${path}/sites\" to \"660\"..."
-#4 find . -name files -type d -exec find '{}' -type f \; | while read FILE; do chmod ug=rw,o= "$FILE"; done
-#echo "Changing permissions of all directories inside all \"files\" directories in \"${path}/sites\" to \"770\"..."
-#5 find . -name files -type d -exec find '{}' -type d \; | while read DIR; do chmod ug=rwx,o= "$DIR"; done

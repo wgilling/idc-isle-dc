@@ -102,7 +102,7 @@ snapshot-push:
 
 .PHONY: up
 .SILENT: up
-up:  download-default-certs docker-compose.yml start
+up:  download-default-certs static-drupal-image docker-compose.yml start
 
 .PHONY: down
 .SILENT: down
@@ -163,7 +163,6 @@ start:
 		echo "Pre-existing Drupal state found, not loading db from snapshot"; \
 		${MAKE} _docker-up-and-wait; \
 	fi;
-	-docker-compose exec -T drupal bash -lc "bash /var/www/drupal/scripts/bash/start_up.sh"
 	$(MAKE) solr-cores
 
 .PHONY: _docker-up-and-wait
@@ -193,12 +192,14 @@ static-drupal-image:
 	else \
 		echo "Using existing Drupal image $${EXISTING}" ; \
 	fi
+	docker tag ${REPOSITORY}/drupal-static:${GIT_TAG} ${REPOSITORY}/drupal-static:static
 
 # Export a tar of the static drupal image
 .PHONY: static-drupal-image-export
 .SILENT: static-drupal-image-export
 static-drupal-image-export: static-drupal-image
 	IMAGE=${REPOSITORY}/drupal-static:${GIT_TAG} ; \
+	echo saving docker image $${IMAGE} ; \
 	mkdir -p images ; \
 	docker save $${IMAGE} > images/static-drupal.tar
 
@@ -208,8 +209,8 @@ static-drupal-image-export: static-drupal-image
 .PHONY: static-docker-compose.yml
 .SILENT: static-docker-compose.yml
 static-docker-compose.yml: static-drupal-image
-	ENV_FILE=.env ; \
-	if [ "$(env)" != "" ] ; then ENV_FILE=$(env); fi; \
+	ENV_FILE=.env
+	if [ "$(env)" != "" ] ; then echo inherited environment ; ENV_FILE=$(env); fi; \
 	echo '' > .env_static && \
 		while read line; do \
 		if echo $$line | grep -q "ENVIRONMENT" ; then \
@@ -218,11 +219,24 @@ static-docker-compose.yml: static-drupal-image
 			echo $$line >> .env_static ; \
 		fi \
 		done < $${ENV_FILE} && \
-		echo DRUPAL_STATIC_TAG=${GIT_TAG} >> .env_static
-	mv $${ENV_FILE} .env.bak
-	mv .env_static $${ENV_FILE}
-	$(MAKE) -B docker-compose.yml args="--env-file $${ENV_FILE}" || mv .env.bak $${ENV_FILE}
-	if [ -f .env.bak ] ; then mv .env.bak $${ENV_FILE} ; fi
+                echo setting xxDRUPAL_STATIC_TAG && \
+		echo xxDRUPAL_STATIC_TAG=static >> .env_static
+	mv ${ENV_FILE} .env.bak
+	mv .env_static ${ENV_FILE}
+	echo Building static drupal configuration
+	#grep DRUPAL_STATIC_TAG= ${ENV_FILE}
+	grep ENVIRONMENT= ${ENV_FILE}
+	$(MAKE) -B docker-compose.yml args="--env-file ${ENV_FILE}" || ( echo reverting ${ENV_FILE} ; mv -v .env.bak ${ENV_FILE} )
+
+.SILENT: revert-env
+.PHONY:  revert-env
+
+revert-env:
+	ENV_FILE=.env
+	if [ -f .env.bak ] ; then \
+	  echo reverting ${ENV_FILE} ; \
+	  mv -v .env.bak ${ENV_FILE} ; \
+	fi
 
 .SILENT: test
 .PHONY: test
