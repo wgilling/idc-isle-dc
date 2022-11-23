@@ -245,7 +245,7 @@ remove_standard_profile_references_from_config:
 .PHONY: config-export
 .SILENT: config-export
 config-export:
-	docker-compose exec drupal bash -lc "bash /var/www/drupal/fix_permissions.sh /var/www/drupal/web nginx"
+	$(MAKE) set-codebase-owner
 	-rm -rf ./codebase/config/sync/*
 	git checkout $(CURDIR)/codebase/config/sync/
 	docker-compose exec drupal drush -l $(SITE) config:export -y

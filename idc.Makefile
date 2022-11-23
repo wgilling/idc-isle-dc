@@ -10,21 +10,8 @@ GIT_TAG := $(shell git describe --tags --always)
 .SILENT: bootstrap
 bootstrap: snapshot-empty default destroy-state up install \
 	update-settings-php update-config-from-environment solr-cores run-islandora-migrations \
-	cache-rebuild
 	git checkout -- .env
 	@echo "  └─ Bootstrap complete."
-
-.PHONY: set-tmp
-set-tmp:
-	@echo "Creating and setting $(shell id -u):101 permissions on tmp & private directories"
-	-docker-compose exec -T drupal /bin/sh -c "mkdir -p /var/www/drupal/web/sites/default/files/tmp"
-	-docker-compose exec -T drupal /bin/sh -c "if [[ ! \$$(stat -c \"%u:%G\" /var/www/drupal/web/sites/default/files/tmp) == \"$(shell id -u):101\" ]] ; then chown -R $(shell id -u):101 /var/www/drupal/web/sites/default/files ; fi ; "
-	-docker-compose exec -T drupal /bin/sh -c "if [[ ! \$$(stat -c \"%a\" /var/www/drupal/web/sites/default/files/tmp) == \"755\" ]] ; then chmod -R 775 /var/www/drupal/web/sites/default/files/tmp ; fi ; "
-	-docker-compose exec -T drupal /bin/sh -c "mkdir -p /tmp/private"
-	-docker-compose exec -T drupal /bin/sh -c "if [[ ! \$$(stat -c \"%u:%G\" /tmp/private) == \"$(shell id -u):101\" ]] ; then chown -R $(shell id -u):101 /tmp/private ; fi ; "
-	-docker-compose exec -T drupal /bin/sh -c "if [[ ! \$$(stat -c \"%a\" /tmp/private) == \"755\" ]] ; then chmod -R 775 /tmp/private ; fi ; "
-	@echo "  └─ Done"
-	@echo ""
 
 # Rebuilds the Drupal cache
 .PHONY: cache-rebuild
@@ -115,7 +102,7 @@ snapshot-push:
 
 .PHONY: up
 .SILENT: up
-up:  download-default-certs docker-compose.yml start
+up:  download-default-certs static-drupal-image docker-compose.yml start
 
 .PHONY: down
 .SILENT: down
@@ -176,18 +163,6 @@ start:
 		echo "Pre-existing Drupal state found, not loading db from snapshot"; \
 		${MAKE} _docker-up-and-wait; \
 	fi;
-	# This is a bit of a hack to make the solr update work. This can be removed once the solr update is applied to production.
-	-docker-compose exec -T drupal /bin/sh -c "drush cdel core.extension module.search_api_solr_defaults || true"
-	-docker-compose exec -T drupal /bin/sh -c "drush sql-query \"DELETE FROM key_value WHERE collection='system.schema' AND name='search_api_solr_defaults';\" || true"
-	-docker-compose exec -T drupal /bin/sh -c "drush php-eval \"\Drupal::keyValue('system.schema')->delete('remote_stream_wrapper')\" || true"
-	-docker-compose exec -T drupal /bin/sh -c "drush php-eval \"\Drupal::keyValue('system.schema')->delete('matomo')\" || true"
-	$(MAKE) composer-install
-	docker-compose exec -T drupal bash -lc "drush updatedb -y"
-	$(MAKE) config-import
-	# Fix for Github runner "the input device is not a TTY" error
-	docker-compose exec -T drupal bash -lc "bash /var/www/drupal/fix_permissions.sh /var/www/drupal/web nginx"
-	-docker-compose exec -T drupal bash -lc "drush search-api-solr:install-missing-fieldtypes"
-	-docker-compose exec -T drupal bash -lc "drush search-api:rebuild-tracker ; drush search-api-solr:finalize-index ; drush search-api:index"
 	$(MAKE) solr-cores
 
 .PHONY: _docker-up-and-wait
@@ -195,9 +170,11 @@ start:
 _docker-up-and-wait:
 	docker-compose up -d
 	sleep 5
+	if [ "${GITHUB_TOKEN}" ]; then \
+		echo "Installing github token"; \
+		docker-compose exec -T drupal with-contenv bash -lc "composer config -g github-oauth.github.com ${GITHUB_TOKEN}" & echo '' ; \
+	fi;
 	docker-compose exec -T drupal /bin/sh -c "while true ; do echo \"Waiting for Drupal to start ...\" ; if [ -d \"/var/run/s6/services/nginx\" ] ; then s6-svwait -u /var/run/s6/services/nginx && exit 0 ; else sleep 5 ; fi done"
-	$(MAKE) cache-rebuild
-
 
 # Static drupal image, with codebase baked in.  This image
 # is tagged based on the current git hash/tag.  If the image is not present
@@ -209,17 +186,20 @@ static-drupal-image:
 	IMAGE=${REPOSITORY}/drupal-static:${GIT_TAG} ; \
 	EXISTING=`docker images -q $$IMAGE` ; \
 	if test -z "$$EXISTING" ; then \
+		echo "Building Drupal image with base:  $${REPOSITORY}/drupal:$${TAG} " ; \
 		docker pull $${IMAGE} 2>/dev/null || \
 		docker build --build-arg REPOSITORY=$${REPOSITORY} --build-arg TAG=$${TAG} -t $${IMAGE} .; \
 	else \
 		echo "Using existing Drupal image $${EXISTING}" ; \
 	fi
+	docker tag ${REPOSITORY}/drupal-static:${GIT_TAG} ${REPOSITORY}/drupal-static:static
 
 # Export a tar of the static drupal image
 .PHONY: static-drupal-image-export
 .SILENT: static-drupal-image-export
 static-drupal-image-export: static-drupal-image
 	IMAGE=${REPOSITORY}/drupal-static:${GIT_TAG} ; \
+	echo saving docker image $${IMAGE} ; \
 	mkdir -p images ; \
 	docker save $${IMAGE} > images/static-drupal.tar
 
@@ -229,8 +209,8 @@ static-drupal-image-export: static-drupal-image
 .PHONY: static-docker-compose.yml
 .SILENT: static-docker-compose.yml
 static-docker-compose.yml: static-drupal-image
-	ENV_FILE=.env ; \
-	if [ "$(env)" != "" ] ; then ENV_FILE=$(env); fi; \
+	ENV_FILE=.env
+	if [ "$(env)" != "" ] ; then echo inherited environment ; ENV_FILE=$(env); fi; \
 	echo '' > .env_static && \
 		while read line; do \
 		if echo $$line | grep -q "ENVIRONMENT" ; then \
@@ -239,11 +219,24 @@ static-docker-compose.yml: static-drupal-image
 			echo $$line >> .env_static ; \
 		fi \
 		done < $${ENV_FILE} && \
-		echo DRUPAL_STATIC_TAG=${GIT_TAG} >> .env_static
-	mv $${ENV_FILE} .env.bak
-	mv .env_static $${ENV_FILE}
-	$(MAKE) -B docker-compose.yml args="--env-file $${ENV_FILE}" || mv .env.bak $${ENV_FILE}
-	if [ -f .env.bak ] ; then mv .env.bak $${ENV_FILE} ; fi
+                echo setting xxDRUPAL_STATIC_TAG && \
+		echo xxDRUPAL_STATIC_TAG=static >> .env_static
+	mv ${ENV_FILE} .env.bak
+	mv .env_static ${ENV_FILE}
+	echo Building static drupal configuration
+	#grep DRUPAL_STATIC_TAG= ${ENV_FILE}
+	grep ENVIRONMENT= ${ENV_FILE}
+	$(MAKE) -B docker-compose.yml args="--env-file ${ENV_FILE}" || ( echo reverting ${ENV_FILE} ; mv -v .env.bak ${ENV_FILE} )
+
+.SILENT: revert-env
+.PHONY:  revert-env
+
+revert-env:
+	ENV_FILE=.env
+	if [ -f .env.bak ] ; then \
+	  echo reverting ${ENV_FILE} ; \
+	  mv -v .env.bak ${ENV_FILE} ; \
+	fi
 
 .SILENT: test
 .PHONY: test
