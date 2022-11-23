@@ -25,6 +25,9 @@ CHMOD="/bin/chmod"
 
 cd $path
 
+echo -e "Changing ownership of all contents of \"${path}\" :\n user => \"${user}\" \t group => \"${group}\"\n"
+chown -R ${user}:${group} .
+
 echo -e "Fixing directory permissions beneath '$path'"
 find . -type d \( \
             \( -path './sites/*' -a -name files       -a \! -perm 0770 -exec $CHMOD 0770 {} \; \) \
