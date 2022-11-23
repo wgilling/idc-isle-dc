@@ -35,7 +35,6 @@ drush search-api-solr:finalize-index || true
 drush search-api:index || true
 
 # Cleanup
-drush updatedb -y
 drush cc theme-registry
 drush -d status
 
