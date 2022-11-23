@@ -28,20 +28,13 @@ jobs:
               run: |
                   echo '{"experimental": "enabled"}' > ~/.docker/config.json
 
+            # Build and Export image for push to github container registry
+            - name: Build and export drupal image
+              run: make static-drupal-image-export
+
             # Build and run the static environment
             - name: Build Static
               run: make static-docker-compose.yml up
-
-            # Temp fix for 9.4 Add github token to composer
-            - name: Temp fix for 9.4 Add github token to composer
-              run: docker-compose exec -T drupal with-contenv bash -lc "composer config -g github-oauth.github.com ${{ secrets.GH_TOKEN }}"
-
-            # Run initial start up script
-            - name: Run initial start up script
-              run: docker-compose exec -T drupal with-contenv bash -lc "bash /var/www/drupal/scripts/bash/start_up.sh"
-
-            - name: Export image
-              run: make static-drupal-image-export
 
             - uses: actions/upload-artifact@v2
               with:

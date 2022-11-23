@@ -8,9 +8,17 @@ echo " -              Running a Start up script                                 
 echo " -------------------------------------------------------------------------- "
 echo ""
 
-COMPOSER_MEMORY_LIMIT=-1 COMPOSER_DISCARD_CHANGES=true composer install --no-interaction --no-progress
+DRUPAL_DIR=/var/www/drupal
 
-bash /var/www/drupal/fix_permissions.sh /var/www/drupal/web nginx
+echo "Creating tmp and private directories"
+for d in $DRUPAL_DIR/web/sites/default/files/tmp /tmp/private ; do
+  echo " directory: '$d'"
+  mkdir -m 0775 -p "$d"
+  chown -R nginx:nginx "$d"
+done
+
+chmod 0750 $DRUPAL_DIR/fix_permissions.sh
+$DRUPAL_DIR/fix_permissions.sh $DRUPAL_DIR/web nginx
 
 # This is a workaround for a bug.
 drush cdel core.extension module.search_api_solr_defaults || true
@@ -21,19 +29,22 @@ drush php-eval "\Drupal::keyValue('system.schema')->delete('matomo')" || true
 drush config:import -y
 
 # Fix for Github runner "the input device is not a TTY" error
-bash /var/www/drupal/fix_permissions.sh /var/www/drupal/web nginx
 drush search-api-solr:install-missing-fieldtypes || true
 drush search-api:rebuild-tracker || true
 drush search-api-solr:finalize-index || true
 drush search-api:index || true
 
 # Cleanup
-drush updatedb -y
 drush cc theme-registry
 drush -d status
 
 CURRENT_VERSION=$(drush cr && drush core-status --fields=drupal-version | cut -d\: -f2 | sed 's/ //g')
 echo "Current Drupal version: $CURRENT_VERSION"
+
+echo "Copy Generic File"
+if [ ! -f web/sites/default/files/generic.png ] ; then
+  cp "web/core/modules/media/images/icons/generic.png" "web/sites/default/files/generic.png" 
+fi
 
 echo ""
 echo ""
