@@ -14,6 +14,8 @@ COPY --chown=nginx:www-data codebase /var/www/drupal/
 COPY --chown=0:0 rootfs /
 
 RUN COMPOSER_MEMORY_LIMIT=-1 COMPOSER_DISCARD_CHANGES=true composer install --no-interaction --no-progress && \
+    find /var/www/drupal/vendor \! -user nginx -exec chown -v nginx:www-data  {} \; && \
     chmod 0750 /var/www/drupal/fix_permissions.sh && \
-    /var/www/drupal/fix_permissions.sh /var/www/drupal/web nginx
+    /var/www/drupal/fix_permissions.sh /var/www/drupal/web nginx  && \
+    composer clearcache
 
