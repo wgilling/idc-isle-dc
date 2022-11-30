@@ -1,6 +1,5 @@
 #!/usr/bin/with-contenv bash
 
-set -e
 echo ""
 echo ""
 echo " -------------------------------------------------------------------------- "
@@ -13,7 +12,7 @@ CHOWN="/bin/chown"
 CHMOD="/bin/chmod"
 MKDIR="/bin/mkdir"
 
-#find "${DRUPAL_DIR}/vendor" \! -user nginx -exec $CHOWN nginx:www-data  {} \;
+set +e
 
 $CHMOD 0750 $DRUPAL_DIR/fix_permissions.sh
 
