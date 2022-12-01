@@ -219,7 +219,7 @@ static-docker-compose.yml: static-drupal-image
 			echo $$line >> .env_static ; \
 		fi \
 		done < $${ENV_FILE} && \
-                echo setting xxDRUPAL_STATIC_TAG && \
+				echo setting xxDRUPAL_STATIC_TAG && \
 		echo xxDRUPAL_STATIC_TAG=static >> .env_static
 	mv ${ENV_FILE} .env.bak
 	mv .env_static ${ENV_FILE}
