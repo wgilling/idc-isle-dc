@@ -28,16 +28,13 @@ jobs:
               run: |
                   echo '{"experimental": "enabled"}' > ~/.docker/config.json
 
+            # Build and Export image for push to github container registry
+            - name: Build and export drupal image
+              run: make static-drupal-image-export
+
             # Build and run the static environment
             - name: Build Static
               run: make static-docker-compose.yml up
-
-            # Drush tests
-            - name: Drush test
-              run: docker-compose exec -T drupal drush -d status
-
-            - name: Export image
-              run: make static-drupal-image-export
 
             - uses: actions/upload-artifact@v2
               with:
