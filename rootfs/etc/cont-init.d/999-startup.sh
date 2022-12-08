@@ -1,6 +1,5 @@
 #!/usr/bin/with-contenv bash
 
-set -e
 echo ""
 echo ""
 echo " -------------------------------------------------------------------------- "
@@ -9,15 +8,21 @@ echo " -------------------------------------------------------------------------
 echo ""
 
 DRUPAL_DIR=/var/www/drupal
+CHOWN="/bin/chown"
+CHMOD="/bin/chmod"
+MKDIR="/bin/mkdir"
+
+set +e
+
+$CHMOD 0750 $DRUPAL_DIR/fix_permissions.sh
 
 echo "Creating tmp and private directories"
 for d in $DRUPAL_DIR/web/sites/default/files/tmp /tmp/private ; do
   echo " directory: '$d'"
-  mkdir -m 0775 -p "$d"
-  chown -R nginx:nginx "$d"
+  $MKDIR -m 0775 -p "$d"
+  $CHOWN -R nginx:nginx "$d"
 done
 
-chmod 0750 $DRUPAL_DIR/fix_permissions.sh
 $DRUPAL_DIR/fix_permissions.sh $DRUPAL_DIR/web nginx
 
 # This is a workaround for a bug.
@@ -26,16 +31,15 @@ drush sql-query "DELETE FROM key_value WHERE collection='system.schema' AND name
 drush php-eval "\Drupal::keyValue('system.schema')->delete('remote_stream_wrapper')" || true
 drush php-eval "\Drupal::keyValue('system.schema')->delete('matomo')" || true
 
-drush config:import -y
-
 # Fix for Github runner "the input device is not a TTY" error
 drush search-api-solr:install-missing-fieldtypes || true
 drush search-api:rebuild-tracker || true
-drush search-api-solr:finalize-index || true
-drush search-api:index || true
 
 # Cleanup
+echo "Clean theme-registry..."
 drush cc theme-registry
+
+echo "Status..."
 drush -d status
 
 CURRENT_VERSION=$(drush cr && drush core-status --fields=drupal-version | cut -d\: -f2 | sed 's/ //g')
