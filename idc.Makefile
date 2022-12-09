@@ -219,7 +219,7 @@ static-docker-compose.yml: static-drupal-image
 			echo $$line >> .env_static ; \
 		fi \
 		done < $${ENV_FILE} && \
-                echo setting xxDRUPAL_STATIC_TAG && \
+				echo setting xxDRUPAL_STATIC_TAG && \
 		echo xxDRUPAL_STATIC_TAG=static >> .env_static
 	mv ${ENV_FILE} .env.bak
 	mv .env_static ${ENV_FILE}
@@ -281,6 +281,7 @@ YARN=$(shell which yarn)
 .PHONY: theme-compile
 .SILENT: theme-compile
 theme-compile:
+	sudo -u $(shell echo $$USER) test -w codebase/web/themes/contrib/idc-ui-theme || { echo $(shell sudo chown -R $$USER: codebase/) ; exit 1; }
 	docker-compose exec drupal with-contenv bash -lc 'COMPOSER_MEMORY_LIMIT=-1 composer update jhu-idc/idc-ui-theme'
 	sudo chown -R $(shell id -u):101 ./codebase/web/themes/contrib/idc-ui-theme/
 	find ./codebase/web/themes/contrib/idc-ui-theme/ -name 'node_modules' -type d -prune -exec rm -rf '{}' +
