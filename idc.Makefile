@@ -282,11 +282,12 @@ YARN=$(shell which yarn)
 .SILENT: theme-compile
 theme-compile:
 	sudo -u $(shell echo $$USER) test -w codebase/web/themes/contrib/idc-ui-theme || { echo $(shell sudo chown -R $$USER: codebase/) ; exit 1; }
-	@[ "${NODE}" ] && echo "Node Found" || ( echo "NodeJS not found. Please install and try again. https://nodejs.org/en/download/package-manager"; exit 1 )
-	@[ "${NPM}" ] && echo "NPM Found" || ( echo "NPM not found. Please install and try again."; exit 1 )
-	@[ "${YARN}" ] && echo "YARN Found" || ( echo "Yarn not found. Please install and run again. https://yarnpkg.com/getting-started/install"; exit 1 )
 	docker-compose exec drupal with-contenv bash -lc 'COMPOSER_MEMORY_LIMIT=-1 composer update jhu-idc/idc-ui-theme'
-	cd codebase/web/themes/contrib/idc-ui-theme/js && rm -rf node_modules && npm install --force && bash autobuild.sh
-	# Set permissions back
-	docker-compose exec drupal with-contenv bash -lc 'chown -R nginx:www-data web'
+	sudo chown -R $(shell id -u):101 ./codebase/web/themes/contrib/idc-ui-theme/
+	find ./codebase/web/themes/contrib/idc-ui-theme/ -name 'node_modules' -type d -prune -exec rm -rf '{}' +
+	echo $(shell docker rmi $(shell docker images | grep 'idc_theme_build'))
+	cd codebase/web/themes/contrib/idc-ui-theme/ && docker build -t idc_theme_build .
+	echo "Building theme"
+	docker run --rm -v $(shell pwd)/codebase/web/themes/contrib/idc-ui-theme/:/usr/src/project idc_theme_build bash -c "cd js && bash autobuild.sh"
+	sudo find ./codebase/web/themes/contrib/idc-ui-theme/js -exec chown $(shell id -u):101 {} \;
 	docker-compose exec -T drupal bash -lc "drush cc theme-registry"
